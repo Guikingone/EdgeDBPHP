@@ -19,5 +19,11 @@
   },
   "require": {
     "php": ">=7.2"
+  },
+  "require-dev": {
+    "infection/infection": "^0.15.3",
+    "phpunit/phpunit": "^8.5",
+    "phpstan/phpstan": "^0.12.62",
+    "friendsofphp/php-cs-fixer": "^2.17"
   }
 }
