@@ -1,0 +1,23 @@
+{
+  "name": "guikingone/edgedb-php",
+  "authors": [
+    {
+      "name": "Guillaume Loulier",
+      "email": "contact@guillaumeloulier.fr",
+      "homepage": "https://www.guillaumeloulier.fr/"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "EdgeDB\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\EdgeDB\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=7.2"
+  }
+}
