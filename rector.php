@@ -37,8 +37,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         //SetList::PHPUNIT_CODE_QUALITY,
         SetList::PHPSTAN,
         SetList::SOLID,
-        SetList::TWIG_20,
-        SetList::TWIG_UNDERSCORE_TO_NAMESPACE,
         SetList::TYPE_DECLARATION,
     ]);
 

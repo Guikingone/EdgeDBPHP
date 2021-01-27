@@ -1,29 +1,43 @@
 {
-  "name": "guikingone/edgedb-php",
-  "authors": [
-    {
-      "name": "Guillaume Loulier",
-      "email": "contact@guillaumeloulier.fr",
-      "homepage": "https://www.guillaumeloulier.fr/"
-    }
-  ],
-  "autoload": {
-    "psr-4": {
-      "EdgeDB\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\EdgeDB\\": "tests/"
-    }
-  },
-  "require": {
-    "php": ">=7.2"
-  },
-  "require-dev": {
-    "infection/infection": "^0.15.3",
-    "phpunit/phpunit": "^8.5",
-    "phpstan/phpstan": "^0.12.62",
-    "friendsofphp/php-cs-fixer": "^2.17"
-  }
+	"name": "guikingone/edgedb-php",
+	"description": "A PHP client for EdgeDB",
+	"authors": [
+		{
+			"name": "Guillaume Loulier",
+			"email": "contact@guillaumeloulier.fr",
+			"homepage": "https://www.guillaumeloulier.fr/"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"EdgeDB\\": "src/",
+			"EdgeDB\\Events\\": "src/Events/",
+			"EdgeDB\\Protocol\\": "src/Protocol/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\EdgeDB\\": "tests/",
+			"Tests\\EdgeDB\\Events\\": "tests/Events/"
+		}
+	},
+	"require": {
+		"php": ">=7.2",
+		"ext-json": "*",
+		"symfony/options-resolver": "^5.2",
+		"psr/http-client": "^1.0",
+		"psr/http-message": "^1.0",
+		"psr/event-dispatcher": "^1.0",
+		"psr/log": "^1.1",
+		"psr/http-factory": "^1.0"
+	},
+	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^2.17",
+		"infection/infection": "^0.15.3",
+		"nikic/php-parser": "4.10.2",
+		"phpunit/phpunit": "^8.5",
+		"phpstan/phpstan": "^0.12.62",
+		"phpstan/phpstan-phpunit": "^0.12.17",
+		"rector/rector": "^0.8.56"
+	}
 }
