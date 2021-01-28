@@ -1,7 +1,7 @@
 name: EdgeDB CI - Push
 on: [push]
 jobs:
-  meili_search:
+  edgedb:
     name: PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }}
     # https://hub.docker.com/_/ubuntu/
     runs-on: ubuntu-18.04
@@ -52,11 +52,11 @@ jobs:
 
       - name: Install Composer dependencies
         if: matrix.composer-dependencies == ''
-        run: composer update
+        run: composer update --no-suggest
 
       - name: Install Composer dependencies - Lowest
         if: matrix.composer-dependencies == 'lowest'
-        run: composer update --prefer-lowest
+        run: composer update --no-suggest --prefer-lowest
 
       # —— Style —————————————————————————————————————————————————————————
       - name: PHP-CS-FIXER

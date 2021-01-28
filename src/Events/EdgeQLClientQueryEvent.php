@@ -9,7 +9,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class EdgeQLClientEvent implements StoppableEventInterface
+final class EdgeQLClientQueryEvent implements StoppableEventInterface
 {
     /**
      * @var string
@@ -29,7 +29,7 @@ final class EdgeQLClientEvent implements StoppableEventInterface
     /**
      * @param string $method
      * @param string $query
-     * @param array $variables
+     * @param array  $variables
      */
     public function __construct(string $method, string $query, array $variables = [])
     {

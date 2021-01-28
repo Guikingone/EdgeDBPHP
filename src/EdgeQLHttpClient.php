@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EdgeDB;
 
-use EdgeDB\Events\EdgeQLClientEvent;
-use EdgeDB\Events\PostQuerySent;
+use EdgeDB\Events\EdgeQLClientQueryEvent;
 use Exception;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
@@ -79,6 +78,8 @@ final class EdgeQLHttpClient implements HttpClientInterface
             ])));
 
             $response = $this->client->sendRequest($request);
+
+            $this->dispatch(new EdgeQLClientQueryEvent('POST', $query, $variables));
         } catch (Exception $exception) {
             $this->logCritical('An error occurred when trying to send the request', [
                 'query' => $query,
@@ -89,7 +90,13 @@ final class EdgeQLHttpClient implements HttpClientInterface
             throw $exception;
         }
 
-        $this->dispatch(new EdgeQLClientEvent('POST', $query, $variables));
+        $this->logInfo('A query has succeed', [
+            'query' => $query,
+            'variables' => $variables,
+            'method' => 'POST',
+        ]);
+
+        return $response->getBody()->getContents();
     }
 
     private function dispatch(StoppableEventInterface $event): void
@@ -99,6 +106,15 @@ final class EdgeQLHttpClient implements HttpClientInterface
         }
 
         $this->eventDispatcher->dispatch($event);
+    }
+
+    private function logInfo(string $message, array $context = []): void
+    {
+        if (null === $this->logger) {
+            return;
+        }
+
+        $this->logger->info($message, $context);
     }
 
     private function logCritical(string $message, array $context = []): void
