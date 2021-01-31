@@ -21,21 +21,21 @@ final class Result
     /**
      * @var array<string, string|int>|null
      */
-    private $errors;
+    private $error;
 
     /**
      * @param array                          $data
      * @param array<string, string|int>|null $errors
      */
-    public function __construct(array $data, array $errors = null)
+    public function __construct(array $data = [], array $error = null)
     {
         $this->data = $data;
-        $this->errors = $errors;
+        $this->error = $error;
     }
 
     public function filter(Closure $filter): self
     {
-        return new self(array_filter($this->data, $filter, ARRAY_FILTER_USE_BOTH), $this->errors);
+        return new self(array_filter($this->data, $filter, ARRAY_FILTER_USE_BOTH), $this->error);
     }
 
     public function getData(): array
@@ -46,8 +46,8 @@ final class Result
     /**
      * @return array<string, string|int>|null
      */
-    public function getErrors(): ?array
+    public function getError(): ?array
     {
-        return $this->errors;
+        return $this->error;
     }
 }

@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace EdgeDB;
 
 use EdgeDB\Events\EdgeQLClientQueryEvent;
+use EdgeDB\Query\Result;
 use Exception;
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Psr\Http\Client\ClientInterface;
@@ -59,23 +62,30 @@ final class EdgeQLHttpClient implements HttpClientInterface
         ?LoggerInterface $logger = null
     ) {
         $this->endpoint = $endpoint;
-        $this->client = $client;
-        $this->requestFactory = $requestFactory;
-        $this->streamFactory = $streamFactory;
+        $this->client = $client ?: Psr18ClientDiscovery::find();
+        $this->requestFactory = $requestFactory ?: Psr17FactoryDiscovery::findRequestFactory();
+        $this->streamFactory = $streamFactory ?: Psr17FactoryDiscovery::findStreamFactory();
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger ?: new NullLogger();
     }
 
-    public function post(string $query, array $variables = [])
+    public function post(string $query, array $variables = []): Result
     {
         try {
-            $request = $this->requestFactory->createRequest('POST', $this->endpoint);
-            $request->withHeader('Content-Type', 'application/json');
-            $request->withHeader('Accept', 'application/json');
-            $request->withBody($this->streamFactory->createStream(json_encode([
-                'query' => $query,
-                'variables' => $variables,
-            ])));
+            $request = $this->requestFactory->createRequest('POST', $this->endpoint)
+                ->withHeader('Content-Type', 'application/json')
+                ->withHeader('Accept', 'application/json')
+                ->withBody($this->streamFactory->createStream(json_encode([
+                    'query' => $query,
+                ])))
+            ;
+
+            if ([] !== $variables) {
+                $request = $request->withBody($this->streamFactory->createStream(json_encode([
+                    'query' => $query,
+                    'variables' => json_encode($variables),
+                ])));
+            }
 
             $response = $this->client->sendRequest($request);
 
@@ -96,7 +106,9 @@ final class EdgeQLHttpClient implements HttpClientInterface
             'method' => 'POST',
         ]);
 
-        return $response->getBody()->getContents();
+        $body = json_decode($response->getBody()->getContents(), true);
+
+        return new Result($body['data'] ?? [], $body['error'] ?? []);
     }
 
     private function dispatch(StoppableEventInterface $event): void
