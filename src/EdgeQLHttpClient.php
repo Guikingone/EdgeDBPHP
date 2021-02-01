@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EdgeDB;
 
 use EdgeDB\Events\EdgeQLClientQueryEvent;
-use EdgeDB\Query\Result;
+use EdgeDB\Query\EdgeQLHttpResult;
 use Exception;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
@@ -69,7 +69,7 @@ final class EdgeQLHttpClient implements HttpClientInterface
         $this->logger = $logger ?: new NullLogger();
     }
 
-    public function post(string $query, array $variables = []): Result
+    public function post(string $query, array $variables = []): EdgeQLHttpResult
     {
         try {
             $request = $this->requestFactory->createRequest('POST', $this->endpoint)
@@ -108,7 +108,7 @@ final class EdgeQLHttpClient implements HttpClientInterface
 
         $body = json_decode($response->getBody()->getContents(), true);
 
-        return new Result($body['data'] ?? [], $body['error'] ?? []);
+        return new EdgeQLHttpResult($body['data'] ?? [], $body['error'] ?? []);
     }
 
     private function dispatch(StoppableEventInterface $event): void

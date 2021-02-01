@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EdgeDB\Protocol;
+namespace EdgeDB\Types;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class Buffer
+final class Set
 {
 
 }

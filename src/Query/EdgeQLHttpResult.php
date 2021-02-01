@@ -11,7 +11,7 @@ use const ARRAY_FILTER_USE_BOTH;
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class Result
+final class EdgeQLHttpResult
 {
     /**
      * @var array

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\EdgeDB;
+namespace Tests\EdgeDB\Protocol;
 
-use EdgeDB\Client;
+use EdgeDB\Protocol\Client;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,9 +21,12 @@ final class ClientTest extends TestCase
         $client = Client::connect($dsn);
 
         self::assertNotEmpty($client->getOptions());
+        self::assertArrayHasKey('host', $client->getOptions());
+        self::assertArrayHasKey('user', $client->getOptions());
+        self::assertArrayHasKey('password', $client->getOptions());
     }
 
-    public function provideDsn(): \Generator
+    public function provideDsn(): Generator
     {
         yield 'EdgeDb' => ['edgedb://edgedb@localhost/foo'];
         yield 'EdgeDb with password' => ['edgedb://edgedb:root@localhost/foo'];

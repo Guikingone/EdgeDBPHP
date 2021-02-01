@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace EdgeDB;
+namespace EdgeDB\Protocol;
 
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function getenv;
 use function parse_url;
@@ -15,32 +17,36 @@ use function urldecode;
  */
 final class Client
 {
-    private const ALLOWED_OPTIONS = [
-        'host',
-        'port',
-        'admin',
-        'user',
-        'database',
-        'password',
-        'timeout',
-    ];
+    /**
+     * @var ConnectionPool
+     */
+    private $pool;
 
     /**
      * @var array<string, mixed>
      */
     private $options;
 
-    private function __construct(string $dsn, array $options = [])
+    private function __construct(string $dsn, array $options = [], LoggerInterface $logger = null)
     {
         $configuration = $this->parseDsn($dsn);
 
         $this->handleConfiguration($configuration);
 
-        var_dump(stream_socket_client('localhost:8883'));
+        $this->pool = new ConnectionPool();
+        $this->pool->add(new Connection());
+
+        $connection = pg_connect(sprintf('host=127.0.0.1 dbname=foo port=10700 user=edgedb'));
+        $result = pg_prepare($connection, 'select_movies', 'SELECT Movies;');
+        dump(pg_connect_poll($connection));die;
     }
 
     public static function connect(string $dsn, array $options = []): self
     {
+        if (!function_exists('pg_connection_status')) {
+            throw new RuntimeException('The pgsql extension must be enabled (not PDO one)');
+        }
+
         return new self($dsn, $options);
     }
 
