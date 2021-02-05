@@ -11,20 +11,9 @@ use Psr\EventDispatcher\StoppableEventInterface;
  */
 final class EdgeQLClientQueryEvent implements StoppableEventInterface
 {
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var string
-     */
-    private $query;
-
-    /**
-     * @var array
-     */
-    private $variables;
+    private string $method;
+    private string $query;
+    private array $variables;
 
     /**
      * @param string $method

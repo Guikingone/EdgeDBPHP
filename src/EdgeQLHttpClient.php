@@ -4,54 +4,37 @@ declare(strict_types=1);
 
 namespace EdgeDB;
 
+use Closure;
 use EdgeDB\Events\EdgeQLClientQueryEvent;
+use EdgeDB\Exception\ClientRuntimeException;
 use EdgeDB\Query\EdgeQLHttpResult;
-use Exception;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Throwable;
+use function is_array;
+use function json_decode;
 use function json_encode;
+use function sprintf;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
 final class EdgeQLHttpClient implements HttpClientInterface
 {
-    /**
-     * @var string
-     */
-    private $endpoint;
-
-    /**
-     * @var ClientInterface|null
-     */
-    private $client;
-
-    /**
-     * @var RequestFactoryInterface|null
-     */
-    private $requestFactory;
-
-    /**
-     * @var StreamFactoryInterface|null
-     */
-    private $streamFactory;
-
-    /**
-     * @var EventDispatcherInterface|null
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private string $endpoint;
+    private ?ClientInterface $client;
+    private ?RequestFactoryInterface $requestFactory;
+    private ?StreamFactoryInterface $streamFactory;
+    private ?EventDispatcherInterface $eventDispatcher;
+    private LoggerInterface $logger;
 
     public function __construct(
         string $endpoint,
@@ -71,7 +54,7 @@ final class EdgeQLHttpClient implements HttpClientInterface
 
     public function post(string $query, array $variables = []): EdgeQLHttpResult
     {
-        try {
+        return $this->sendRequest(function () use ($query, $variables): RequestInterface {
             $request = $this->requestFactory->createRequest('POST', $this->endpoint)
                 ->withHeader('Content-Type', 'application/json')
                 ->withHeader('Accept', 'application/json')
@@ -87,11 +70,35 @@ final class EdgeQLHttpClient implements HttpClientInterface
                 ])));
             }
 
-            $response = $this->client->sendRequest($request);
+            return $request;
+        }, $query, $variables);
+    }
 
-            $this->dispatch(new EdgeQLClientQueryEvent('POST', $query, $variables));
-        } catch (Exception $exception) {
-            $this->logCritical('An error occurred when trying to send the request', [
+    public function get(string $query, array $variables = []): EdgeQLHttpResult
+    {
+        return $this->sendRequest(function () use ($query, $variables): RequestInterface {
+            $request = $this->requestFactory->createRequest('GET', $this->endpoint)
+                ->withHeader('Accept', 'application/json')
+            ;
+
+            $request->getUri()->withQuery(sprintf('?query=%s', $query));
+
+            if ([] !== $variables) {
+                $request = $request->getUri()->withQuery(sprintf('&variables=%s', json_encode($variables)));
+            }
+
+            return $request;
+        }, $query, $variables, 'GET');
+    }
+
+    private function sendRequest(Closure $requestClosure, string $query, array $variables = [], string $method = 'POST'): EdgeQLHttpResult
+    {
+        try {
+            $response = $this->client->sendRequest($requestClosure());
+
+            $this->dispatch(new EdgeQLClientQueryEvent($method, $query, $variables));
+        } catch (Throwable $exception) {
+            $this->logger->critical('An error occurred when trying to send the request', [
                 'query' => $query,
                 'variables' => $variables,
                 'error' => $exception->getMessage(),
@@ -100,13 +107,17 @@ final class EdgeQLHttpClient implements HttpClientInterface
             throw $exception;
         }
 
-        $this->logInfo('A query has succeed', [
+        $this->logger->info('A query has succeed', [
             'query' => $query,
             'variables' => $variables,
-            'method' => 'POST',
+            'method' => $method,
         ]);
 
         $body = json_decode($response->getBody()->getContents(), true);
+
+        if (!is_array($body)) {
+            throw new ClientRuntimeException('The response body cannot be parsed');
+        }
 
         return new EdgeQLHttpResult($body['data'] ?? [], $body['error'] ?? []);
     }
@@ -118,23 +129,5 @@ final class EdgeQLHttpClient implements HttpClientInterface
         }
 
         $this->eventDispatcher->dispatch($event);
-    }
-
-    private function logInfo(string $message, array $context = []): void
-    {
-        if (null === $this->logger) {
-            return;
-        }
-
-        $this->logger->info($message, $context);
-    }
-
-    private function logCritical(string $message, array $context = []): void
-    {
-        if (null === $this->logger) {
-            return;
-        }
-
-        $this->logger->critical($message, $context);
     }
 }

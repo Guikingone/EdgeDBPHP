@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class EdgeQLHttpClientTest extends TestCase
 {
-    public function testClientCanBeInstantiated(): void
+    public function testClientCannot(): void
     {
     }
 }

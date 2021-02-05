@@ -12,6 +12,11 @@ jobs:
       matrix:
         php-versions: ['7.2', '7.3', '7.4', '8.0']
         composer-dependencies: ['', 'lowest']
+    services:
+      edgedb:
+        image: edgedb:latest
+        ports:
+          - 5656:5656
     steps:
       # https://github.com/actions/checkout (official)
       - name: Checkout

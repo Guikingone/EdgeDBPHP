@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\EdgeDB\Protocol;
 
-use EdgeDB\Protocol\Client;
+use EdgeDB\Protocol\BlockingClient;
 use Generator;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class ClientTest extends TestCase
+final class BlockingClientTest extends TestCase
 {
     /**
      * @dataProvider provideDsn
      */
     public function testClientCanBeCreated(string $dsn): void
     {
-        $client = Client::connect($dsn);
+        $client = BlockingClient::connect($dsn);
 
         self::assertNotEmpty($client->getOptions());
         self::assertArrayHasKey('host', $client->getOptions());

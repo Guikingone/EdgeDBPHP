@@ -13,7 +13,9 @@
 			"EdgeDB\\": "src/",
 			"EdgeDB\\Exception\\": "src/Exception/",
 			"EdgeDB\\Events\\": "src/Events/",
-			"EdgeDB\\Protocol\\": "src/Protocol/"
+			"EdgeDB\\Protocol\\": "src/Protocol/",
+			"EdgeDB\\Query\\": "src/Query/",
+			"EdgeDB\\Types\\": "src/Types/"
 		}
 	},
 	"autoload-dev": {
@@ -23,7 +25,7 @@
 		}
 	},
 	"require": {
-		"php": ">=7.2",
+		"php": ">=7.4",
 		"ext-json": "*",
 		"ext-pgsql": "*",
 		"symfony/options-resolver": "^5.2",
@@ -46,6 +48,7 @@
 		"symfony/http-client": "^5.2",
 		"guzzlehttp/guzzle": "^7.2",
 		"nyholm/psr7": "^1.3",
-		"php-http/httplug": "^2.2"
+		"php-http/httplug": "^2.2",
+		"vimeo/psalm": "^4.4"
 	}
 }

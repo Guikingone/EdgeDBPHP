@@ -16,12 +16,12 @@ final class EdgeQLHttpResult
     /**
      * @var array
      */
-    private $data;
+    private array $data;
 
     /**
      * @var array<string, string|int>|null
      */
-    private $error;
+    private ?array $error;
 
     /**
      * @param array                          $data

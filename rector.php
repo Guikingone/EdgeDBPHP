@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set(Option::PHP_VERSION_FEATURES, '7.2');
+    $parameters->set(Option::PHP_VERSION_FEATURES, '7.4');
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);
 
     $parameters->set(Option::PATHS, [
@@ -30,6 +30,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         SetList::PHP_70,
         SetList::PHP_71,
         SetList::PHP_72,
+        SetList::PHP_73,
+        SetList::PHP_74,
         SetList::DEAD_CODE,
         //SetList::CODING_STYLE,
         //SetList::CODING_STYLE_ADVANCED,

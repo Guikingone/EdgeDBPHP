@@ -7,7 +7,18 @@ namespace EdgeDB\Protocol;
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class AsyncClient
+final class AsyncClient implements ClientInterface
 {
+    public static function connect(string $dsn, array $options = []): ClientInterface
+    {
 
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOptions(): array
+    {
+
+    }
 }

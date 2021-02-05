@@ -6,6 +6,7 @@ namespace EdgeDB\Protocol;
 
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function getenv;
@@ -15,41 +16,37 @@ use function urldecode;
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class Client
+final class BlockingClient implements ClientInterface
 {
-    /**
-     * @var ConnectionPool
-     */
-    private $pool;
-
     /**
      * @var array<string, mixed>
      */
-    private $options;
+    private array $options;
+    private LoggerInterface $logger;
 
     private function __construct(string $dsn, array $options = [], LoggerInterface $logger = null)
     {
         $configuration = $this->parseDsn($dsn);
 
         $this->handleConfiguration($configuration);
-
-        $this->pool = new ConnectionPool();
-        $this->pool->add(new Connection());
-
-        $connection = pg_connect(sprintf('host=127.0.0.1 dbname=foo port=10700 user=edgedb'));
-        $result = pg_prepare($connection, 'select_movies', 'SELECT Movies;');
-        dump(pg_connect_poll($connection));die;
+        $this->logger = $logger ?: new NullLogger();
     }
 
-    public static function connect(string $dsn, array $options = []): self
+    /**
+     * {@inheritdoc}
+     */
+    public static function connect(string $dsn, array $options = [], LoggerInterface $logger = null): ClientInterface
     {
         if (!function_exists('pg_connection_status')) {
             throw new RuntimeException('The pgsql extension must be enabled (not PDO one)');
         }
 
-        return new self($dsn, $options);
+        return new self($dsn, $options, $logger);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getOptions(): array
     {
         return $this->options;
@@ -69,18 +66,13 @@ final class Client
             throw new InvalidArgumentException('The host must be defined');
         }
 
-        $user = isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null;
-        $password = isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null;
-        $port = $parsedDsn['port'] ?? 5656;
-        $path = $parsedDsn['path'] ?? null;
-
         return [
             'scheme' => $parsedDsn['scheme'],
             'host' => $parsedDsn['host'],
-            'user' => $user,
-            'password' => $password,
-            'port' => $port,
-            'database' => $path,
+            'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null,
+            'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null,
+            'port' => $parsedDsn['port'] ?? 5656,
+            'database' => $parsedDsn['path'] ?? null,
         ];
     }
 
@@ -89,18 +81,18 @@ final class Client
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'scheme' => 'edgedb',
-            'host' => 'localhost',
+            'host' => '127.0.0.1',
             'port' => 5656,
-            'user' => null,
+            'user' => 'edgedb',
             'password' => null,
-            'database' => null,
+            'database' => 'edgedb',
             'admin' => false,
             'timeout' => null,
         ]);
 
-        $resolver->setAllowedTypes('scheme', 'string');
-        $resolver->setAllowedTypes('host', 'string');
-        $resolver->setAllowedTypes('port', 'int');
+        $resolver->setAllowedTypes('scheme', ['string']);
+        $resolver->setAllowedTypes('host', ['string']);
+        $resolver->setAllowedTypes('port', ['int']);
         $resolver->setAllowedTypes('user', ['string', 'null']);
         $resolver->setAllowedTypes('password', ['string', 'null']);
         $resolver->setAllowedTypes('database', ['string', 'null']);
