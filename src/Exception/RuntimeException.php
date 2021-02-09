@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace EdgeDB\Exception;
 
-use RuntimeException;
+use RuntimeException as InternalRuntimeException;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class ClientRuntimeException extends RuntimeException
+final class RuntimeException extends InternalRuntimeException
 {
 }

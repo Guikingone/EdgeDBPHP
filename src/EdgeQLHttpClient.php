@@ -6,7 +6,7 @@ namespace EdgeDB;
 
 use Closure;
 use EdgeDB\Events\EdgeQLClientQueryEvent;
-use EdgeDB\Exception\ClientRuntimeException;
+use EdgeDB\Exception\RuntimeException;
 use EdgeDB\Query\EdgeQLHttpResult;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
@@ -116,7 +116,7 @@ final class EdgeQLHttpClient implements HttpClientInterface
         $body = json_decode($response->getBody()->getContents(), true);
 
         if (!is_array($body)) {
-            throw new ClientRuntimeException('The response body cannot be parsed');
+            throw new RuntimeException('The response body cannot be parsed');
         }
 
         return new EdgeQLHttpResult($body['data'] ?? [], $body['error'] ?? []);

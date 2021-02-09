@@ -1,0 +1,6 @@
+{
+  "username": "edgedb",
+  "password": "edgedb",
+  "port": "5",
+  "database": "foo"
+}
