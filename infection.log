@@ -1,0 +1,2302 @@
+Escaped mutants:
+================
+
+
+1) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:68    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     private function validateCredentials(array $credentials = [])
+     {
+-        $credentials['port'] = $credentials['port'] ?? 5656;
++        $credentials['port'] = $credentials['port'] ?? 5655;
+         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
+             throw new RuntimeException('The port is not valid');
+         }
+
+
+2) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:68    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     private function validateCredentials(array $credentials = [])
+     {
+-        $credentials['port'] = $credentials['port'] ?? 5656;
++        $credentials['port'] = $credentials['port'] ?? 5657;
+         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
+             throw new RuntimeException('The port is not valid');
+         }
+
+
+3) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:70    [M] LessThan
+
+--- Original
++++ New
+@@ @@
+     private function validateCredentials(array $credentials = [])
+     {
+         $credentials['port'] = $credentials['port'] ?? 5656;
+-        if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
++        if (!is_int($credentials['port']) || ($credentials['port'] <= 1 || $credentials['port'] > 65535)) {
+             throw new RuntimeException('The port is not valid');
+         }
+         if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
+
+
+4) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:70    [M] GreaterThan
+
+--- Original
++++ New
+@@ @@
+     private function validateCredentials(array $credentials = [])
+     {
+         $credentials['port'] = $credentials['port'] ?? 5656;
+-        if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
++        if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] >= 65535)) {
+             throw new RuntimeException('The port is not valid');
+         }
+         if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
+
+
+5) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:19    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     public function __construct()
+     {
+         $this->buffer = new Buffer();
+-        $this->size = 4096;
++        $this->size = 4095;
+         $this->position = 0;
+     }
+     public function reset() : void
+
+
+6) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:19    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+     public function __construct()
+     {
+         $this->buffer = new Buffer();
+-        $this->size = 4096;
++        $this->size = 4097;
+         $this->position = 0;
+     }
+     public function reset() : void
+
+Timed Out mutants:
+==================
+
+Not Covered mutants:
+====================
+
+
+1) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:55    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->eventDispatcher = $eventDispatcher;
+         $this->logger = $logger ?: new NullLogger();
+     }
+-    public function post(string $query, array $variables = []) : EdgeQLHttpResult
++    protected function post(string $query, array $variables = []) : EdgeQLHttpResult
+     {
+         return $this->sendRequest(function () use($query, $variables) : RequestInterface {
+             $request = $this->requestFactory->createRequest('POST', $this->endpoint)->withHeader('Content-Type', 'application/json')->withHeader('Accept', 'application/json')->withBody($this->streamFactory->createStream(json_encode(['query' => $query])));
+
+
+2) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:61    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+     public function post(string $query, array $variables = []) : EdgeQLHttpResult
+     {
+         return $this->sendRequest(function () use($query, $variables) : RequestInterface {
+-            $request = $this->requestFactory->createRequest('POST', $this->endpoint)->withHeader('Content-Type', 'application/json')->withHeader('Accept', 'application/json')->withBody($this->streamFactory->createStream(json_encode(['query' => $query])));
++            $request = $this->requestFactory->createRequest('POST', $this->endpoint)->withHeader('Content-Type', 'application/json')->withHeader('Accept', 'application/json')->withBody($this->streamFactory->createStream(json_encode([])));
+             if ([] !== $variables) {
+                 $request = $request->withBody($this->streamFactory->createStream(json_encode(['query' => $query, 'variables' => json_encode($variables)])));
+             }
+
+
+3) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:66    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+     {
+         return $this->sendRequest(function () use($query, $variables) : RequestInterface {
+             $request = $this->requestFactory->createRequest('POST', $this->endpoint)->withHeader('Content-Type', 'application/json')->withHeader('Accept', 'application/json')->withBody($this->streamFactory->createStream(json_encode(['query' => $query])));
+-            if ([] !== $variables) {
++            if ([] === $variables) {
+                 $request = $request->withBody($this->streamFactory->createStream(json_encode(['query' => $query, 'variables' => json_encode($variables)])));
+             }
+             return $request;
+
+
+4) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:67    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+         return $this->sendRequest(function () use($query, $variables) : RequestInterface {
+             $request = $this->requestFactory->createRequest('POST', $this->endpoint)->withHeader('Content-Type', 'application/json')->withHeader('Accept', 'application/json')->withBody($this->streamFactory->createStream(json_encode(['query' => $query])));
+             if ([] !== $variables) {
+-                $request = $request->withBody($this->streamFactory->createStream(json_encode(['query' => $query, 'variables' => json_encode($variables)])));
++                $request = $request->withBody($this->streamFactory->createStream(json_encode(['variables' => json_encode($variables)])));
+             }
+             return $request;
+         }, $query, $variables);
+
+
+5) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:69    [M] ArrayItem
+
+--- Original
++++ New
+@@ @@
+         return $this->sendRequest(function () use($query, $variables) : RequestInterface {
+             $request = $this->requestFactory->createRequest('POST', $this->endpoint)->withHeader('Content-Type', 'application/json')->withHeader('Accept', 'application/json')->withBody($this->streamFactory->createStream(json_encode(['query' => $query])));
+             if ([] !== $variables) {
+-                $request = $request->withBody($this->streamFactory->createStream(json_encode(['query' => $query, 'variables' => json_encode($variables)])));
++                $request = $request->withBody($this->streamFactory->createStream(json_encode(['query' => $query, 'variables' > json_encode($variables)])));
+             }
+             return $request;
+         }, $query, $variables);
+
+
+6) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:77    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+             return $request;
+         }, $query, $variables);
+     }
+-    public function get(string $query, array $variables = []) : EdgeQLHttpResult
++    protected function get(string $query, array $variables = []) : EdgeQLHttpResult
+     {
+         return $this->sendRequest(function () use($query, $variables) : RequestInterface {
+             $request = $this->requestFactory->createRequest('GET', $this->endpoint)->withHeader('Accept', 'application/json');
+
+
+7) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:84    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     {
+         return $this->sendRequest(function () use($query, $variables) : RequestInterface {
+             $request = $this->requestFactory->createRequest('GET', $this->endpoint)->withHeader('Accept', 'application/json');
+-            $request->getUri()->withQuery(sprintf('?query=%s', $query));
++            
+             if ([] !== $variables) {
+                 $request = $request->getUri()->withQuery(sprintf('&variables=%s', json_encode($variables)));
+             }
+
+
+8) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:86    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+         return $this->sendRequest(function () use($query, $variables) : RequestInterface {
+             $request = $this->requestFactory->createRequest('GET', $this->endpoint)->withHeader('Accept', 'application/json');
+             $request->getUri()->withQuery(sprintf('?query=%s', $query));
+-            if ([] !== $variables) {
++            if ([] === $variables) {
+                 $request = $request->getUri()->withQuery(sprintf('&variables=%s', json_encode($variables)));
+             }
+             return $request;
+
+
+9) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:99    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     {
+         try {
+             $response = $this->client->sendRequest($requestClosure());
+-            $this->dispatch(new EdgeQLClientQueryEvent($method, $query, $variables));
++            
+         } catch (Throwable $exception) {
+             $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
+             throw $exception;
+
+
+10) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:101    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+             $response = $this->client->sendRequest($requestClosure());
+             $this->dispatch(new EdgeQLClientQueryEvent($method, $query, $variables));
+         } catch (Throwable $exception) {
+-            $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
++            $this->logger->critical('An error occurred when trying to send the request', ['variables' => $variables, 'error' => $exception->getMessage()]);
+             throw $exception;
+         }
+         $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
+
+
+11) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:101    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             $response = $this->client->sendRequest($requestClosure());
+             $this->dispatch(new EdgeQLClientQueryEvent($method, $query, $variables));
+         } catch (Throwable $exception) {
+-            $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
++            
+             throw $exception;
+         }
+         $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
+
+
+12) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:104    [M] ArrayItem
+
+--- Original
++++ New
+@@ @@
+             $response = $this->client->sendRequest($requestClosure());
+             $this->dispatch(new EdgeQLClientQueryEvent($method, $query, $variables));
+         } catch (Throwable $exception) {
+-            $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
++            $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' > $exception->getMessage()]);
+             throw $exception;
+         }
+         $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
+
+
+13) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:107    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+             $this->dispatch(new EdgeQLClientQueryEvent($method, $query, $variables));
+         } catch (Throwable $exception) {
+             $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
+-            throw $exception;
++            $exception;
+         }
+         $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
+         $body = json_decode($response->getBody()->getContents(), true);
+
+
+14) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:110    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
+             throw $exception;
+         }
+-        $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
++        
+         $body = json_decode($response->getBody()->getContents(), true);
+         if (!is_array($body)) {
+             throw new RuntimeException('The response body cannot be parsed');
+
+
+15) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:110    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+             $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
+             throw $exception;
+         }
+-        $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
++        $this->logger->info('A query has succeed', ['variables' => $variables, 'method' => $method]);
+         $body = json_decode($response->getBody()->getContents(), true);
+         if (!is_array($body)) {
+             throw new RuntimeException('The response body cannot be parsed');
+
+
+16) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:118    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         }
+         $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
+         $body = json_decode($response->getBody()->getContents(), true);
+-        if (!is_array($body)) {
++        if (is_array($body)) {
+             throw new RuntimeException('The response body cannot be parsed');
+         }
+         return new EdgeQLHttpResult($body['data'] ?? [], $body['error'] ?? []);
+
+
+17) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:119    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+         $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
+         $body = json_decode($response->getBody()->getContents(), true);
+         if (!is_array($body)) {
+-            throw new RuntimeException('The response body cannot be parsed');
++            new RuntimeException('The response body cannot be parsed');
+         }
+         return new EdgeQLHttpResult($body['data'] ?? [], $body['error'] ?? []);
+     }
+
+
+18) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:122    [M] Coalesce
+
+--- Original
++++ New
+@@ @@
+         if (!is_array($body)) {
+             throw new RuntimeException('The response body cannot be parsed');
+         }
+-        return new EdgeQLHttpResult($body['data'] ?? [], $body['error'] ?? []);
++        return new EdgeQLHttpResult([], $body['error'] ?? []);
+     }
+     private function dispatch(StoppableEventInterface $event) : void
+     {
+
+
+19) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:122    [M] Coalesce
+
+--- Original
++++ New
+@@ @@
+         if (!is_array($body)) {
+             throw new RuntimeException('The response body cannot be parsed');
+         }
+-        return new EdgeQLHttpResult($body['data'] ?? [], $body['error'] ?? []);
++        return new EdgeQLHttpResult($body['data'] ?? [], []);
+     }
+     private function dispatch(StoppableEventInterface $event) : void
+     {
+
+
+20) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:127    [M] Identical
+
+--- Original
++++ New
+@@ @@
+     }
+     private function dispatch(StoppableEventInterface $event) : void
+     {
+-        if (null === $this->eventDispatcher) {
++        if (null !== $this->eventDispatcher) {
+             return;
+         }
+         $this->eventDispatcher->dispatch($event);
+     }
+
+21) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:131    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         if (null === $this->eventDispatcher) {
+             return;
+         }
+-        $this->eventDispatcher->dispatch($event);
++        
+     }
+ }
+
+
+22) /Users/guillaume/Projects/edgedb-php/src/Events/EdgeQLClientQueryEvent.php:30    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->query = $query;
+         $this->variables = $variables;
+     }
+-    public function getMethod() : string
++    protected function getMethod() : string
+     {
+         return $this->method;
+     }
+
+
+23) /Users/guillaume/Projects/edgedb-php/src/Events/EdgeQLClientQueryEvent.php:35    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     {
+         return $this->method;
+     }
+-    public function getQuery() : string
++    protected function getQuery() : string
+     {
+         return $this->query;
+     }
+
+
+24) /Users/guillaume/Projects/edgedb-php/src/Events/EdgeQLClientQueryEvent.php:43    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     /**
+      * @return array
+      */
+-    public function getVariables() : array
++    protected function getVariables() : array
+     {
+         return $this->variables;
+     }
+
+
+25) /Users/guillaume/Projects/edgedb-php/src/Events/EdgeQLClientQueryEvent.php:50    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+     }
+     public function isPropagationStopped() : bool
+     {
+-        return false;
++        return true;
+     }
+ }
+
+
+26) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:30    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     private function __construct(string $dsn, array $options = [], LoggerInterface $logger = null)
+     {
+         $configuration = $this->parseDsn($dsn);
+-        $this->handleConfiguration($configuration);
++        
+         $this->logger = $logger ?: new NullLogger();
+     }
+     /**
+
+
+27) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:40    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     public static function connect(string $dsn, array $options = [], LoggerInterface $logger = null) : ClientInterface
+     {
+         $handShake = new WriteMessageBuffer();
+-        $handShake->beginMessage();
++        
+         return new self($dsn, $options, $logger);
+     }
+     /**
+
+
+28) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:55    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+     }
+     private function parseDsn(string $dsn) : array
+     {
+-        if (false === ($parsedDsn = parse_url($dsn))) {
++        if (true === ($parsedDsn = parse_url($dsn))) {
+             throw new InvalidArgumentException('The given DSN is not valid');
+         }
+         if (!isset($parsedDsn['scheme'])) {
+
+
+29) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:55    [M] Identical
+
+--- Original
++++ New
+@@ @@
+     }
+     private function parseDsn(string $dsn) : array
+     {
+-        if (false === ($parsedDsn = parse_url($dsn))) {
++        if (false !== ($parsedDsn = parse_url($dsn))) {
+             throw new InvalidArgumentException('The given DSN is not valid');
+         }
+         if (!isset($parsedDsn['scheme'])) {
+
+
+30) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:56    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+     private function parseDsn(string $dsn) : array
+     {
+         if (false === ($parsedDsn = parse_url($dsn))) {
+-            throw new InvalidArgumentException('The given DSN is not valid');
++            new InvalidArgumentException('The given DSN is not valid');
+         }
+         if (!isset($parsedDsn['scheme'])) {
+             throw new InvalidArgumentException('The scheme must be equal to "edgedb" or a custom instance name');
+
+
+31) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:59    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         if (false === ($parsedDsn = parse_url($dsn))) {
+             throw new InvalidArgumentException('The given DSN is not valid');
+         }
+-        if (!isset($parsedDsn['scheme'])) {
++        if (isset($parsedDsn['scheme'])) {
+             throw new InvalidArgumentException('The scheme must be equal to "edgedb" or a custom instance name');
+         }
+         if (!isset($parsedDsn['host'])) {
+
+
+32) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:60    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+             throw new InvalidArgumentException('The given DSN is not valid');
+         }
+         if (!isset($parsedDsn['scheme'])) {
+-            throw new InvalidArgumentException('The scheme must be equal to "edgedb" or a custom instance name');
++            new InvalidArgumentException('The scheme must be equal to "edgedb" or a custom instance name');
+         }
+         if (!isset($parsedDsn['host'])) {
+             throw new InvalidArgumentException('The host must be defined');
+
+
+33) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:63    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         if (!isset($parsedDsn['scheme'])) {
+             throw new InvalidArgumentException('The scheme must be equal to "edgedb" or a custom instance name');
+         }
+-        if (!isset($parsedDsn['host'])) {
++        if (isset($parsedDsn['host'])) {
+             throw new InvalidArgumentException('The host must be defined');
+         }
+         return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
+
+
+34) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:64    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+             throw new InvalidArgumentException('The scheme must be equal to "edgedb" or a custom instance name');
+         }
+         if (!isset($parsedDsn['host'])) {
+-            throw new InvalidArgumentException('The host must be defined');
++            new InvalidArgumentException('The host must be defined');
+         }
+         return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
+     }
+
+
+35) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:67    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+         if (!isset($parsedDsn['host'])) {
+             throw new InvalidArgumentException('The host must be defined');
+         }
+-        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
++        return ['host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
+     }
+     private function handleConfiguration(array $configuration) : void
+     {
+
+
+36) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] Coalesce
+
+--- Original
++++ New
+@@ @@
+         if (!isset($parsedDsn['host'])) {
+             throw new InvalidArgumentException('The host must be defined');
+         }
+-        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
++        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => 5656, 'database' => $parsedDsn['path'] ?? null];
+     }
+     private function handleConfiguration(array $configuration) : void
+     {
+
+
+37) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+         if (!isset($parsedDsn['host'])) {
+             throw new InvalidArgumentException('The host must be defined');
+         }
+-        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
++        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5655, 'database' => $parsedDsn['path'] ?? null];
+     }
+     private function handleConfiguration(array $configuration) : void
+     {
+
+
+38) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+         if (!isset($parsedDsn['host'])) {
+             throw new InvalidArgumentException('The host must be defined');
+         }
+-        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
++        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5657, 'database' => $parsedDsn['path'] ?? null];
+     }
+     private function handleConfiguration(array $configuration) : void
+     {
+
+
+39) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:73    [M] Coalesce
+
+--- Original
++++ New
+@@ @@
+         if (!isset($parsedDsn['host'])) {
+             throw new InvalidArgumentException('The host must be defined');
+         }
+-        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
++        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => null];
+     }
+     private function handleConfiguration(array $configuration) : void
+     {
+
+
+40) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:80    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     private function handleConfiguration(array $configuration) : void
+     {
+         $resolver = new OptionsResolver();
+-        $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
++        
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+
+
+41) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:80    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+     private function handleConfiguration(array $configuration) : void
+     {
+         $resolver = new OptionsResolver();
+-        $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
++        $resolver->setDefaults(['host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+
+
+42) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:83    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     private function handleConfiguration(array $configuration) : void
+     {
+         $resolver = new OptionsResolver();
+-        $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
++        $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5655, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+
+
+43) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:83    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+     private function handleConfiguration(array $configuration) : void
+     {
+         $resolver = new OptionsResolver();
+-        $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
++        $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5657, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+
+
+44) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:87    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+     private function handleConfiguration(array $configuration) : void
+     {
+         $resolver = new OptionsResolver();
+-        $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
++        $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => true, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+
+
+45) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:91    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+     {
+         $resolver = new OptionsResolver();
+         $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+-        $resolver->setAllowedTypes('scheme', ['string']);
++        $resolver->setAllowedTypes('scheme', []);
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+
+
+46) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:91    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     {
+         $resolver = new OptionsResolver();
+         $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+-        $resolver->setAllowedTypes('scheme', ['string']);
++        
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+
+
+47) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:92    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver = new OptionsResolver();
+         $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+-        $resolver->setAllowedTypes('host', ['string']);
++        
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+
+
+48) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:92    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver = new OptionsResolver();
+         $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+-        $resolver->setAllowedTypes('host', ['string']);
++        $resolver->setAllowedTypes('host', []);
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+
+
+49) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:93    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+-        $resolver->setAllowedTypes('port', ['int']);
++        $resolver->setAllowedTypes('port', []);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+
+
+50) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:93    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+-        $resolver->setAllowedTypes('port', ['int']);
++        
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+
+
+51) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:94    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+-        $resolver->setAllowedTypes('user', ['string', 'null']);
++        
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+
+
+52) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:94    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+-        $resolver->setAllowedTypes('user', ['string', 'null']);
++        $resolver->setAllowedTypes('user', ['null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+
+
+53) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:95    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+-        $resolver->setAllowedTypes('password', ['string', 'null']);
++        
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+             if (null !== $host) {
+
+
+54) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:95    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('host', ['string']);
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+-        $resolver->setAllowedTypes('password', ['string', 'null']);
++        $resolver->setAllowedTypes('password', ['null']);
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+             if (null !== $host) {
+
+
+55) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:96    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+-        $resolver->setAllowedTypes('database', ['string', 'null']);
++        
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+             if (null !== $host) {
+                 return true;
+
+
+56) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:96    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+-        $resolver->setAllowedTypes('database', ['string', 'null']);
++        $resolver->setAllowedTypes('database', ['null']);
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+             if (null !== $host) {
+                 return true;
+
+
+57) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:98    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+-        $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+-            if (null !== $host) {
+-                return true;
+-            }
+-            if (false !== getenv('EDGEDB_HOST')) {
+-                return true;
+
+58) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:99    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+-            if (null !== $host) {
++            if (null === $host) {
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_HOST')) {
+
+
+59) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:100    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+             if (null !== $host) {
+-                return true;
++                return false;
+             }
+             if (false !== getenv('EDGEDB_HOST')) {
+                 return true;
+
+
+60) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:103    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (null !== $host) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_HOST')) {
++            if (false === getenv('EDGEDB_HOST')) {
+                 return true;
+             }
+             if (null !== $configuration['host']) {
+
+
+61) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:103    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $host) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_HOST')) {
++            if (true !== getenv('EDGEDB_HOST')) {
+                 return true;
+             }
+             if (null !== $configuration['host']) {
+
+
+62) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:104    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_HOST')) {
+-                return true;
++                return false;
+             }
+             if (null !== $configuration['host']) {
+                 return true;
+
+
+63) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:107    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (false !== getenv('EDGEDB_HOST')) {
+                 return true;
+             }
+-            if (null !== $configuration['host']) {
++            if (null === $configuration['host']) {
+                 return true;
+             }
+             return false;
+
+
+64) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:108    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (null !== $configuration['host']) {
+-                return true;
++                return false;
+             }
+             return false;
+         });
+
+
+65) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:111    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $configuration['host']) {
+                 return true;
+             }
+-            return false;
++            return true;
+         });
+         $resolver->setAllowedValues('port', function ($port) use($configuration) : bool {
+             if (null !== $port) {
+
+
+66) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:114    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             }
+             return false;
+         });
+-        $resolver->setAllowedValues('port', function ($port) use($configuration) : bool {
+-            if (null !== $port) {
+-                return true;
+-            }
+-            if (false !== getenv('EDGEDB_PORT')) {
+-                return true;
+
+67) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:115    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             return false;
+         });
+         $resolver->setAllowedValues('port', function ($port) use($configuration) : bool {
+-            if (null !== $port) {
++            if (null === $port) {
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_PORT')) {
+
+
+68) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:116    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+         });
+         $resolver->setAllowedValues('port', function ($port) use($configuration) : bool {
+             if (null !== $port) {
+-                return true;
++                return false;
+             }
+             if (false !== getenv('EDGEDB_PORT')) {
+                 return true;
+
+
+69) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:119    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (null !== $port) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_PORT')) {
++            if (false === getenv('EDGEDB_PORT')) {
+                 return true;
+             }
+             if (null !== $configuration['port']) {
+
+
+70) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:119    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $port) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_PORT')) {
++            if (true !== getenv('EDGEDB_PORT')) {
+                 return true;
+             }
+             if (null !== $configuration['port']) {
+
+
+71) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:120    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_PORT')) {
+-                return true;
++                return false;
+             }
+             if (null !== $configuration['port']) {
+                 return true;
+
+
+72) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:123    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (false !== getenv('EDGEDB_PORT')) {
+                 return true;
+             }
+-            if (null !== $configuration['port']) {
++            if (null === $configuration['port']) {
+                 return true;
+             }
+             return false;
+
+
+73) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:124    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (null !== $configuration['port']) {
+-                return true;
++                return false;
+             }
+             return false;
+         });
+
+
+74) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:127    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $configuration['port']) {
+                 return true;
+             }
+-            return false;
++            return true;
+         });
+         $resolver->setAllowedValues('user', function ($user) use($configuration) : bool {
+             if (null !== $user) {
+
+
+75) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:130    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             }
+             return false;
+         });
+-        $resolver->setAllowedValues('user', function ($user) use($configuration) : bool {
+-            if (null !== $user) {
+-                return true;
+-            }
+-            if (false !== getenv('EDGEDB_USER')) {
+-                return true;
+
+76) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:131    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             return false;
+         });
+         $resolver->setAllowedValues('user', function ($user) use($configuration) : bool {
+-            if (null !== $user) {
++            if (null === $user) {
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_USER')) {
+
+
+77) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:132    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+         });
+         $resolver->setAllowedValues('user', function ($user) use($configuration) : bool {
+             if (null !== $user) {
+-                return true;
++                return false;
+             }
+             if (false !== getenv('EDGEDB_USER')) {
+                 return true;
+
+
+78) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:135    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $user) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_USER')) {
++            if (true !== getenv('EDGEDB_USER')) {
+                 return true;
+             }
+             if (null !== $configuration['user']) {
+
+
+79) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:135    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (null !== $user) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_USER')) {
++            if (false === getenv('EDGEDB_USER')) {
+                 return true;
+             }
+             if (null !== $configuration['user']) {
+
+
+80) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:136    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_USER')) {
+-                return true;
++                return false;
+             }
+             if (null !== $configuration['user']) {
+                 return true;
+
+
+81) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:139    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (false !== getenv('EDGEDB_USER')) {
+                 return true;
+             }
+-            if (null !== $configuration['user']) {
++            if (null === $configuration['user']) {
+                 return true;
+             }
+             return false;
+
+
+82) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:140    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (null !== $configuration['user']) {
+-                return true;
++                return false;
+             }
+             return false;
+         });
+
+
+83) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:143    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $configuration['user']) {
+                 return true;
+             }
+-            return false;
++            return true;
+         });
+         $resolver->setAllowedValues('database', function ($database) use($configuration) : bool {
+             if (null !== $database) {
+
+
+84) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:146    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             }
+             return false;
+         });
+-        $resolver->setAllowedValues('database', function ($database) use($configuration) : bool {
+-            if (null !== $database) {
+-                return true;
+-            }
+-            if (false !== getenv('EDGEDB_DATABASE')) {
+-                return true;
+
+85) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:147    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             return false;
+         });
+         $resolver->setAllowedValues('database', function ($database) use($configuration) : bool {
+-            if (null !== $database) {
++            if (null === $database) {
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_DATABASE')) {
+
+
+86) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:148    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+         });
+         $resolver->setAllowedValues('database', function ($database) use($configuration) : bool {
+             if (null !== $database) {
+-                return true;
++                return false;
+             }
+             if (false !== getenv('EDGEDB_DATABASE')) {
+                 return true;
+
+
+87) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:151    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $database) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_DATABASE')) {
++            if (true !== getenv('EDGEDB_DATABASE')) {
+                 return true;
+             }
+             if (null !== $configuration['database']) {
+
+
+88) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:151    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (null !== $database) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_DATABASE')) {
++            if (false === getenv('EDGEDB_DATABASE')) {
+                 return true;
+             }
+             if (null !== $configuration['database']) {
+
+
+89) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:152    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_DATABASE')) {
+-                return true;
++                return false;
+             }
+             if (null !== $configuration['database']) {
+                 return true;
+
+
+90) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:155    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (false !== getenv('EDGEDB_DATABASE')) {
+                 return true;
+             }
+-            if (null !== $configuration['database']) {
++            if (null === $configuration['database']) {
+                 return true;
+             }
+             return false;
+
+
+91) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:156    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (null !== $configuration['database']) {
+-                return true;
++                return false;
+             }
+             return false;
+         });
+
+
+92) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:159    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $configuration['database']) {
+                 return true;
+             }
+-            return false;
++            return true;
+         });
+         $resolver->setAllowedValues('password', function ($password) use($configuration) : bool {
+             if (null === $password) {
+
+
+93) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:162    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             }
+             return false;
+         });
+-        $resolver->setAllowedValues('password', function ($password) use($configuration) : bool {
+-            if (null === $password) {
+-                return true;
+-            }
+-            if (false !== getenv('EDGEDB_PASSWORD')) {
+-                return true;
+
+94) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:163    [M] Identical
+
+--- Original
++++ New
+@@ @@
+             return false;
+         });
+         $resolver->setAllowedValues('password', function ($password) use($configuration) : bool {
+-            if (null === $password) {
++            if (null !== $password) {
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_PASSWORD')) {
+
+
+95) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:164    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+         });
+         $resolver->setAllowedValues('password', function ($password) use($configuration) : bool {
+             if (null === $password) {
+-                return true;
++                return false;
+             }
+             if (false !== getenv('EDGEDB_PASSWORD')) {
+                 return true;
+
+
+96) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:167    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null === $password) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_PASSWORD')) {
++            if (true !== getenv('EDGEDB_PASSWORD')) {
+                 return true;
+             }
+             if (null !== $configuration['password']) {
+
+
+97) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:167    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (null === $password) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_PASSWORD')) {
++            if (false === getenv('EDGEDB_PASSWORD')) {
+                 return true;
+             }
+             if (null !== $configuration['password']) {
+
+
+98) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:168    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (false !== getenv('EDGEDB_PASSWORD')) {
+-                return true;
++                return false;
+             }
+             if (null !== $configuration['password']) {
+                 return true;
+
+
+99) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:171    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+             if (false !== getenv('EDGEDB_PASSWORD')) {
+                 return true;
+             }
+-            if (null !== $configuration['password']) {
++            if (null === $configuration['password']) {
+                 return true;
+             }
+             return false;
+
+
+100) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:172    [M] TrueValue
+
+--- Original
++++ New
+@@ @@
+                 return true;
+             }
+             if (null !== $configuration['password']) {
+-                return true;
++                return false;
+             }
+             return false;
+         });
+
+
+101) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:175    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $configuration['password']) {
+                 return true;
+             }
+-            return false;
++            return true;
+         });
+         $this->options = $resolver->resolve($configuration);
+     }
+ }
+
+102) /Users/guillaume/Projects/edgedb-php/src/Protocol/Connection.php:12    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+  */
+ final class Connection
+ {
+-    public function connect()
++    protected function connect()
+     {
+     }
+     public function query(string $query, array $arguments)
+
+
+103) /Users/guillaume/Projects/edgedb-php/src/Protocol/Connection.php:17    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function connect()
+     {
+     }
+-    public function query(string $query, array $arguments)
++    protected function query(string $query, array $arguments)
+     {
+     }
+     public function queryOne(string $query, array $arguments)
+
+
+104) /Users/guillaume/Projects/edgedb-php/src/Protocol/Connection.php:22    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function query(string $query, array $arguments)
+     {
+     }
+-    public function queryOne(string $query, array $arguments)
++    protected function queryOne(string $query, array $arguments)
+     {
+     }
+     public function queryJson(string $query, array $arguments)
+
+
+105) /Users/guillaume/Projects/edgedb-php/src/Protocol/Connection.php:27    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function queryOne(string $query, array $arguments)
+     {
+     }
+-    public function queryJson(string $query, array $arguments)
++    protected function queryJson(string $query, array $arguments)
+     {
+     }
+     public function queryJsonOne(string $query, array $arguments)
+
+
+106) /Users/guillaume/Projects/edgedb-php/src/Protocol/Connection.php:32    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function queryJson(string $query, array $arguments)
+     {
+     }
+-    public function queryJsonOne(string $query, array $arguments)
++    protected function queryJsonOne(string $query, array $arguments)
+     {
+     }
+     public function execute(string $query)
+
+
+107) /Users/guillaume/Projects/edgedb-php/src/Protocol/Connection.php:37    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function queryJsonOne(string $query, array $arguments)
+     {
+     }
+-    public function execute(string $query)
++    protected function execute(string $query)
+     {
+     }
+     public function transaction(bool $isolated, bool $readOnly, bool $deferrable) : Transaction
+
+
+108) /Users/guillaume/Projects/edgedb-php/src/Protocol/Connection.php:42    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function execute(string $query)
+     {
+     }
+-    public function transaction(bool $isolated, bool $readOnly, bool $deferrable) : Transaction
++    protected function transaction(bool $isolated, bool $readOnly, bool $deferrable) : Transaction
+     {
+     }
+ }
+
+
+109) /Users/guillaume/Projects/edgedb-php/src/Protocol/ConnectionPool.php:20    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+      * @var Connection[]
+      */
+     private $connections;
+-    public function add(Connection $connection) : void
++    protected function add(Connection $connection) : void
+     {
+         $this->connections[] = $connection;
+     }
+
+
+110) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:46    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $self->password = $credentials['password'];
+         return $self;
+     }
+-    public function getPort() : int
++    protected function getPort() : int
+     {
+         return $this->port;
+     }
+
+
+111) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:51    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     {
+         return $this->port;
+     }
+-    public function getDatabase() : string
++    protected function getDatabase() : string
+     {
+         return $this->database;
+     }
+
+
+112) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:56    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     {
+         return $this->database;
+     }
+-    public function getUsername() : string
++    protected function getUsername() : string
+     {
+         return $this->username;
+     }
+
+
+113) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:61    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     {
+         return $this->username;
+     }
+-    public function getPassword() : string
++    protected function getPassword() : string
+     {
+         return $this->password;
+     }
+
+
+114) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:74    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
+             throw new RuntimeException('The port is not valid');
+         }
+-        if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
++        if (array_key_exists('host', $credentials) && is_string($credentials['host'])) {
+             throw new RuntimeException('The host is not valid');
+         }
+         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
+
+
+115) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:74    [M] LogicalAnd
+
+--- Original
++++ New
+@@ @@
+         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
+             throw new RuntimeException('The port is not valid');
+         }
+-        if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
++        if (array_key_exists('host', $credentials) || !is_string($credentials['host'])) {
+             throw new RuntimeException('The host is not valid');
+         }
+         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
+
+
+116) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:75    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+             throw new RuntimeException('The port is not valid');
+         }
+         if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
+-            throw new RuntimeException('The host is not valid');
++            new RuntimeException('The host is not valid');
+         }
+         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
+             throw new RuntimeException('The database is not valid');
+
+
+117) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:78    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
+             throw new RuntimeException('The host is not valid');
+         }
+-        if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
++        if (array_key_exists('database', $credentials) && is_string($credentials['database'])) {
+             throw new RuntimeException('The database is not valid');
+         }
+         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
+
+
+118) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:78    [M] LogicalAnd
+
+--- Original
++++ New
+@@ @@
+         if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
+             throw new RuntimeException('The host is not valid');
+         }
+-        if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
++        if (array_key_exists('database', $credentials) || !is_string($credentials['database'])) {
+             throw new RuntimeException('The database is not valid');
+         }
+         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
+
+
+119) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:79    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+             throw new RuntimeException('The host is not valid');
+         }
+         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
+-            throw new RuntimeException('The database is not valid');
++            new RuntimeException('The database is not valid');
+         }
+         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
+             throw new RuntimeException('The user is not valid');
+
+
+120) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:82    [M] LogicalAnd
+
+--- Original
++++ New
+@@ @@
+         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
+             throw new RuntimeException('The database is not valid');
+         }
+-        if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
++        if (array_key_exists('user', $credentials) || !is_string($credentials['user'])) {
+             throw new RuntimeException('The user is not valid');
+         }
+         if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
+
+
+121) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:82    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
+             throw new RuntimeException('The database is not valid');
+         }
+-        if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
++        if (array_key_exists('user', $credentials) && is_string($credentials['user'])) {
+             throw new RuntimeException('The user is not valid');
+         }
+         if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
+
+
+122) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:83    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+             throw new RuntimeException('The database is not valid');
+         }
+         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
+-            throw new RuntimeException('The user is not valid');
++            new RuntimeException('The user is not valid');
+         }
+         if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
+             throw new RuntimeException('The password is not valid');
+
+
+123) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:86    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
+             throw new RuntimeException('The user is not valid');
+         }
+-        if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
++        if (array_key_exists('password', $credentials) && is_string($credentials['password'])) {
+             throw new RuntimeException('The password is not valid');
+         }
+     }
+ }
+
+124) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:86    [M] LogicalAnd
+
+--- Original
++++ New
+@@ @@
+         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
+             throw new RuntimeException('The user is not valid');
+         }
+-        if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
++        if (array_key_exists('password', $credentials) || !is_string($credentials['password'])) {
+             throw new RuntimeException('The password is not valid');
+         }
+     }
+ }
+
+125) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:87    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+             throw new RuntimeException('The user is not valid');
+         }
+         if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
+-            throw new RuntimeException('The password is not valid');
++            new RuntimeException('The password is not valid');
+         }
+     }
+ }
+
+
+126) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:12    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+  */
+ final class Transaction
+ {
+-    public function start()
++    protected function start()
+     {
+     }
+     public function commit()
+
+
+127) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:17    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function start()
+     {
+     }
+-    public function commit()
++    protected function commit()
+     {
+     }
+     public function rollback()
+
+
+128) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:22    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function commit()
+     {
+     }
+-    public function rollback()
++    protected function rollback()
+     {
+     }
+ }
+
+
+129) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:28    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     {
+         $this->position = 0;
+     }
+-    public function writeInt32(int $number) : self
++    protected function writeInt32(int $number) : self
+     {
+     }
+     public function getPosition() : int
+
+
+130) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:20    [M] OneZeroInteger
+
+--- Original
++++ New
+@@ @@
+     public function __construct()
+     {
+         $this->buffer = new WriteBuffer();
+-        $this->messagePosition = -1;
++        $this->messagePosition = -0;
+     }
+     public function reset() : self
+     {
+
+
+131) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:20    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+     public function __construct()
+     {
+         $this->buffer = new WriteBuffer();
+-        $this->messagePosition = -1;
++        $this->messagePosition = -2;
+     }
+     public function reset() : self
+     {
+
+
+132) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:23    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->buffer = new WriteBuffer();
+         $this->messagePosition = -1;
+     }
+-    public function reset() : self
++    protected function reset() : self
+     {
+         $this->messagePosition = -1;
+         $this->buffer->reset();
+
+
+133) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:25    [M] OneZeroInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     public function reset() : self
+     {
+-        $this->messagePosition = -1;
++        $this->messagePosition = -0;
+         $this->buffer->reset();
+         return $this;
+     }
+
+
+134) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:25    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     public function reset() : self
+     {
+-        $this->messagePosition = -1;
++        $this->messagePosition = -2;
+         $this->buffer->reset();
+         return $this;
+     }
+
+
+135) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:26    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     public function reset() : self
+     {
+         $this->messagePosition = -1;
+-        $this->buffer->reset();
++        
+         return $this;
+     }
+     public function beginMessage(string $value) : self
+
+
+136) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:31    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->buffer->reset();
+         return $this;
+     }
+-    public function beginMessage(string $value) : self
++    protected function beginMessage(string $value) : self
+     {
+         if ($this->messagePosition >= 0) {
+             throw new BufferError('The previous message is not finished');
+
+
+137) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:33    [M] GreaterThanOrEqualTo
+
+--- Original
++++ New
+@@ @@
+     }
+     public function beginMessage(string $value) : self
+     {
+-        if ($this->messagePosition >= 0) {
++        if ($this->messagePosition > 0) {
+             throw new BufferError('The previous message is not finished');
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+
+
+138) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:33    [M] GreaterThanOrEqualToNegotiation
+
+--- Original
++++ New
+@@ @@
+     }
+     public function beginMessage(string $value) : self
+     {
+-        if ($this->messagePosition >= 0) {
++        if ($this->messagePosition < 0) {
+             throw new BufferError('The previous message is not finished');
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+
+
+139) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:34    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+     public function beginMessage(string $value) : self
+     {
+         if ($this->messagePosition >= 0) {
+-            throw new BufferError('The previous message is not finished');
++            new BufferError('The previous message is not finished');
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+         $this->buffer->writeChar($value);
+
+
+140) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:38    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             throw new BufferError('The previous message is not finished');
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+-        $this->buffer->writeChar($value);
++        
+         $this->buffer->writeInt32(0);
+         return $this;
+     }
+ }
+
+141) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+         $this->buffer->writeChar($value);
+-        $this->buffer->writeInt32(0);
++        
+         return $this;
+     }
+ }
+
+
+142) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] OneZeroInteger
+
+--- Original
++++ New
+@@ @@
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+         $this->buffer->writeChar($value);
+-        $this->buffer->writeInt32(0);
++        $this->buffer->writeInt32(1);
+         return $this;
+     }
+ }
+
+
+143) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+         $this->buffer->writeChar($value);
+-        $this->buffer->writeInt32(0);
++        $this->buffer->writeInt32(-1);
+         return $this;
+     }
+ }
+
+
+144) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:36    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->data = $data;
+         $this->error = $error;
+     }
+-    public function filter(Closure $filter) : self
++    protected function filter(Closure $filter) : self
+     {
+         return new self(array_filter($this->data, $filter, ARRAY_FILTER_USE_BOTH), $this->error);
+     }
+
+
+145) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:38    [M] UnwrapArrayFilter
+
+--- Original
++++ New
+@@ @@
+     }
+     public function filter(Closure $filter) : self
+     {
+-        return new self(array_filter($this->data, $filter, ARRAY_FILTER_USE_BOTH), $this->error);
++        return new self($this->data, $this->error);
+     }
+     public function getData() : array
+     {
+
+
+146) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:41    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     {
+         return new self(array_filter($this->data, $filter, ARRAY_FILTER_USE_BOTH), $this->error);
+     }
+-    public function getData() : array
++    protected function getData() : array
+     {
+         return $this->data;
+     }
+
+
+147) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:49    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     /**
+      * @return array<string, string|int>|null
+      */
+-    public function getError() : ?array
++    protected function getError() : ?array
+     {
+         return $this->error;
+     }
+ }

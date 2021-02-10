@@ -19,7 +19,7 @@ final class CredentialsTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('The credentials file does not exist');
         self::expectExceptionCode(0);
-        Credentials::load(getcwd().'/foo.json');
+        Credentials::load(__DIR__.'/foo.json');
     }
 
     public function testCredentialsCannotBeLoadedWithInvalidZeroPort(): void
@@ -27,7 +27,7 @@ final class CredentialsTest extends TestCase
         self::expectException(RuntimeException::class);
         self::expectExceptionMessage('The port is not valid');
         self::expectExceptionCode(0);
-        Credentials::load(getcwd().'/assets/edgedb_invalid_zero_port.json');
+        Credentials::load(__DIR__.'/assets/edgedb_invalid_zero_port.json');
     }
 
     public function testCredentialsCannotBeLoadedWithInvalidHighPort(): void
@@ -35,7 +35,7 @@ final class CredentialsTest extends TestCase
         self::expectException(RuntimeException::class);
         self::expectExceptionMessage('The port is not valid');
         self::expectExceptionCode(0);
-        Credentials::load(getcwd().'/assets/edgedb_invalid_high_port.json');
+        Credentials::load(__DIR__.'/assets/edgedb_invalid_high_port.json');
     }
 
     public function testCredentialsCannotBeLoadedWithInvalidPortType(): void
@@ -43,6 +43,6 @@ final class CredentialsTest extends TestCase
         self::expectException(RuntimeException::class);
         self::expectExceptionMessage('The port is not valid');
         self::expectExceptionCode(0);
-        Credentials::load(getcwd().'/assets/edgedb_invalid_type_port.json');
+        Credentials::load(__DIR__.'/assets/edgedb_invalid_type_port.json');
     }
 }

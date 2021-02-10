@@ -7,7 +7,6 @@ namespace EdgeDB\Protocol;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function getenv;
 use function parse_url;
@@ -37,9 +36,8 @@ final class BlockingClient implements ClientInterface
      */
     public static function connect(string $dsn, array $options = [], LoggerInterface $logger = null): ClientInterface
     {
-        if (!function_exists('pg_connection_status')) {
-            throw new RuntimeException('The pgsql extension must be enabled (not PDO one)');
-        }
+        $handShake = new WriteMessageBuffer();
+        $handShake->beginMessage();
 
         return new self($dsn, $options, $logger);
     }

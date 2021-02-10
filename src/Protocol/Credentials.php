@@ -19,7 +19,6 @@ use function json_decode;
 final class Credentials
 {
     private int $port;
-    private string $host;
     private string $database;
     private string $username;
     private string $password;
@@ -34,12 +33,9 @@ final class Credentials
 
         $credentials = json_decode(file_get_contents($path), true);
 
-        if (!$self->validateCredentials($credentials)) {
-            throw new RuntimeException('The credentials are not valid');
-        }
+        $self->validateCredentials($credentials);
 
         $self->port = $credentials['port'];
-        $self->host = $credentials['host'];
         $self->database = $credentials['database'];
         $self->username = $credentials['username'];
         $self->password = $credentials['password'];
@@ -50,11 +46,6 @@ final class Credentials
     public function getPort(): int
     {
         return $this->port;
-    }
-
-    public function getHost(): string
-    {
-        return $this->host;
     }
 
     public function getDatabase(): string
@@ -72,11 +63,11 @@ final class Credentials
         return $this->password;
     }
 
-    private function validateCredentials(array $credentials = []): bool
+    private function validateCredentials(array $credentials = [])
     {
         $credentials['port'] = $credentials['port'] ?? 5656;
 
-        if (!is_int($credentials['port']) && ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
+        if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
             throw new RuntimeException('The port is not valid');
         }
 

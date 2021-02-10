@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace EdgeDB\Protocol;
+namespace EdgeDB\Exception;
+
+use Error;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class AsyncClient
+final class BufferError extends Error
 {
-
 }
