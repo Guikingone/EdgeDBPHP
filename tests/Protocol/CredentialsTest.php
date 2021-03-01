@@ -45,4 +45,14 @@ final class CredentialsTest extends TestCase
         self::expectExceptionCode(0);
         Credentials::load(__DIR__.'/assets/edgedb_invalid_type_port.json');
     }
+
+    public function testCredentialsCanBeLoadedWithoutPort(): void
+    {
+        $credentials = Credentials::load(__DIR__.'/assets/edgedb_undefined_port.json');
+
+        self::assertSame('edgedb', $credentials->getUsername());
+        self::assertSame('edgedb', $credentials->getPassword());
+        self::assertSame(5656, $credentials->getPort());
+        self::assertSame('foo', $credentials->getDatabase());
+    }
 }

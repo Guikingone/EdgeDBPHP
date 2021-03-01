@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EdgeDB\Events;
+namespace EdgeDB\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 

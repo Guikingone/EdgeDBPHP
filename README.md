@@ -10,21 +10,10 @@
 ## Installation
 
 ```bash
-$ composer require guikingone/edgedb-php-client
-```
-
-## Usage
-
-```php
-<?php
-
-use EdgeDB\Client;
-
-$client = Client::connect('edgedb://edgedb@localhost/foo');
-
-# ...
+$ composer require guikingone/edgedb-php
 ```
 
 ## Documentation
 
-The full documentation can be found [here](doc).
+- [HTTP](doc/http.md)
+- [Events](doc/events.md)

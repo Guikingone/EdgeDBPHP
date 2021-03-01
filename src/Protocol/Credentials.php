@@ -25,15 +25,12 @@ final class Credentials
 
     public static function load(string $path): self
     {
-        $self = new self();
-
         if (!file_exists($path)) {
             throw new InvalidArgumentException('The credentials file does not exist');
         }
 
-        $credentials = json_decode(file_get_contents($path), true);
-
-        $self->validateCredentials($credentials);
+        $self = new self();
+        $credentials = $self->validateCredentials(json_decode(file_get_contents($path), true));
 
         $self->port = $credentials['port'];
         $self->database = $credentials['database'];
@@ -63,7 +60,7 @@ final class Credentials
         return $this->password;
     }
 
-    private function validateCredentials(array $credentials = [])
+    private function validateCredentials(array $credentials = []): array
     {
         $credentials['port'] = $credentials['port'] ?? 5656;
 
@@ -86,5 +83,7 @@ final class Credentials
         if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
             throw new RuntimeException('The password is not valid');
         }
+
+        return $credentials;
     }
 }

@@ -3,13 +3,14 @@
 declare(strict_types=1);
 
 use Rector\Core\Configuration\Option;
+use Rector\Core\ValueObject\PhpVersion;
 use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set(Option::PHP_VERSION_FEATURES, '7.4');
+    $parameters->set(Option::PHP_VERSION_FEATURES, PhpVersion::PHP_74);
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);
 
     $parameters->set(Option::PATHS, [
@@ -17,7 +18,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/tests',
     ]);
 
-    $parameters->set(Option::EXCLUDE_PATHS, [
+    $parameters->set(Option::SKIP, [
         __DIR__ . '/vendor',
         __DIR__ . '/src/Test',
     ]);
@@ -35,10 +36,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         SetList::DEAD_CODE,
         //SetList::CODING_STYLE,
         //SetList::CODING_STYLE_ADVANCED,
-        SetList::PERFORMANCE,
         //SetList::PHPUNIT_CODE_QUALITY,
-        SetList::PHPSTAN,
-        SetList::SOLID,
         SetList::TYPE_DECLARATION,
     ]);
 

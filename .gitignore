@@ -1,4 +1,10 @@
+# Build
 vendor
+composer.lock
 
 # Extra
 edge.php
+
+# Logs
+infection.log
+summary.log

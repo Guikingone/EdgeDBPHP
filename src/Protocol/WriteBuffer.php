@@ -25,6 +25,11 @@ final class WriteBuffer
         $this->position = 0;
     }
 
+    public function writeString(string $string): self
+    {
+
+    }
+
     public function writeInt32(int $number): self
     {
         $this->ensureAllocated(4);

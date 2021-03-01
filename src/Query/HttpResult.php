@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace EdgeDB\Query;
 
 use Closure;
+use Countable;
 use function array_filter;
+use function count;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class EdgeQLHttpResult
+final class HttpResult implements Countable
 {
     /**
      * @var array
@@ -49,5 +51,21 @@ final class EdgeQLHttpResult
     public function getError(): ?array
     {
         return $this->error;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'data' => $this->data,
+            'errors' => $this->error,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count(): int
+    {
+        return count($this->data);
     }
 }
