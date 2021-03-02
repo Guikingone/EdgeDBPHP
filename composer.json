@@ -13,6 +13,10 @@
 		"psr-4": {
 			"EdgeDB\\": "src/",
 			"EdgeDB\\Client\\": "src/Client/",
+			"EdgeDB\\EdgeQL\\": "src/EdgeQL/",
+			"EdgeDB\\EdgeQL\\Administration\\": "src/EdgeQL/Administration/",
+			"EdgeDB\\EdgeQL\\DataDefinition\\": "src/EdgeQL/DataDefinition/",
+			"EdgeDB\\EdgeQL\\Statement\\": "src/EdgeQL/Statement/",
 			"EdgeDB\\Exception\\": "src/Exception/",
 			"EdgeDB\\Event\\": "src/Event/",
 			"EdgeDB\\Protocol\\": "src/Protocol/",
@@ -24,6 +28,10 @@
 		"psr-4": {
 			"Tests\\EdgeDB\\": "tests/",
 			"Tests\\EdgeDB\\Client\\": "tests/Client/",
+			"Tests\\EdgeDB\\EdgeQL\\": "tests/EdgeQL/",
+			"Tests\\EdgeDB\\EdgeQL\\Administration\\": "tests/EdgeQL/Administration/",
+			"Tests\\EdgeDB\\EdgeQL\\DataDefinition\\": "tests/EdgeQL/DataDefinition/",
+			"Tests\\EdgeDB\\EdgeQL\\Statement\\": "tests/EdgeQL/Statement/",
 			"Tests\\EdgeDB\\Event\\": "tests/Event/",
 			"Tests\\EdgeDB\\Events\\Query\\": "tests/Events/Query/",
 			"Tests\\EdgeDB\\Protocol\\": "tests/Protocol/",
