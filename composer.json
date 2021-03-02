@@ -1,6 +1,7 @@
 {
 	"name": "guikingone/edgedb-php",
 	"description": "A PHP client for EdgeDB",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Guillaume Loulier",
@@ -14,7 +15,6 @@
 			"EdgeDB\\Client\\": "src/Client/",
 			"EdgeDB\\Exception\\": "src/Exception/",
 			"EdgeDB\\Event\\": "src/Event/",
-			"EdgeDB\\Events\\Transaction\\": "src/Events/Transaction/",
 			"EdgeDB\\Protocol\\": "src/Protocol/",
 			"EdgeDB\\Query\\": "src/Query/",
 			"EdgeDB\\Types\\": "src/Types/"
@@ -23,9 +23,12 @@
 	"autoload-dev": {
 		"psr-4": {
 			"Tests\\EdgeDB\\": "tests/",
+			"Tests\\EdgeDB\\Client\\": "tests/Client/",
 			"Tests\\EdgeDB\\Event\\": "tests/Event/",
 			"Tests\\EdgeDB\\Events\\Query\\": "tests/Events/Query/",
-			"Tests\\EdgeDB\\Events\\Transaction\\": "tests/Events/Transaction/"
+			"Tests\\EdgeDB\\Protocol\\": "tests/Protocol/",
+			"Tests\\EdgeDB\\Query\\": "tests/Query/",
+			"Tests\\EdgeDB\\Types\\": "tests/Types/"
 		}
 	},
 	"require": {

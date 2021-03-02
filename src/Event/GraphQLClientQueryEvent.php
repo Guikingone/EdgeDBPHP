@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace EdgeDB\Event;
 
-use Psr\EventDispatcher\StoppableEventInterface;
-
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class EdgeQLClientQueryEvent implements StoppableEventInterface
+final class GraphQLClientQueryEvent
 {
     private string $method;
     private string $query;
+    private ?string $operationName;
     private ?array $variables;
 
     /**
-     * @param array|null $variables
+     * @param array $variables
      */
     public function __construct(
         string $method,
         string $query,
+        ?string $operationName = null,
         ?array $variables = null
     ) {
         $this->method = $method;
         $this->query = $query;
+        $this->operationName = $operationName;
         $this->variables = $variables;
     }
 
@@ -38,16 +39,16 @@ final class EdgeQLClientQueryEvent implements StoppableEventInterface
         return $this->query;
     }
 
-    /**
-     * @return array|null
-     */
-    public function getVariables(): ?array
+    public function getOperationName(): ?string
     {
-        return $this->variables;
+        return $this->operationName;
     }
 
-    public function isPropagationStopped(): bool
+    /**
+     * @return array
+     */
+    public function getVariables(): array
     {
-        return false;
+        return $this->variables;
     }
 }

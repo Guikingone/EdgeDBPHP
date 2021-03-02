@@ -6,19 +6,14 @@ namespace EdgeDB\Query;
 
 use Closure;
 use Countable;
-use function array_filter;
-use function count;
-use const ARRAY_FILTER_USE_BOTH;
+use EdgeDB\Types\Set;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
 final class HttpResult implements Countable
 {
-    /**
-     * @var array
-     */
-    private array $data;
+    private Set $set;
 
     /**
      * @var array<string, string|int>|null
@@ -26,23 +21,23 @@ final class HttpResult implements Countable
     private ?array $error;
 
     /**
-     * @param array                          $data
-     * @param array<string, string|int>|null $errors
+     * @param array               $data
+     * @param int[]|string[]|null $error
      */
-    public function __construct(array $data = [], array $error = null)
+    public function __construct(array $data, ?array $error)
     {
-        $this->data = $data;
+        $this->set = new Set($data);
         $this->error = $error;
     }
 
-    public function filter(Closure $filter): self
+    public function filter(Closure $filter): Set
     {
-        return new self(array_filter($this->data, $filter, ARRAY_FILTER_USE_BOTH), $this->error);
+        return $this->set->filter($filter);
     }
 
-    public function getData(): array
+    public function getSet(): Set
     {
-        return $this->data;
+        return $this->set;
     }
 
     /**
@@ -56,7 +51,7 @@ final class HttpResult implements Countable
     public function toArray(): array
     {
         return [
-            'data' => $this->data,
+            'data' => $this->set->getIterator()->getArrayCopy(),
             'errors' => $this->error,
         ];
     }
@@ -66,6 +61,6 @@ final class HttpResult implements Countable
      */
     public function count(): int
     {
-        return count($this->data);
+        return $this->set->count();
     }
 }

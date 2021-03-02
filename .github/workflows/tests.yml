@@ -17,6 +17,11 @@ jobs:
         php-versions: ['7.4', '8.0']
         composer-dependencies: ['highest', 'lowest']
         edgedb-version: ['stable', 'nightly']
+    services:
+      edgedb:
+        image: edbgedb/edgedb:${{ matrix.edgedb-version }}
+        ports:
+          - 5656:5656
     steps:
       - name: Checkout
         uses: actions/checkout@v2

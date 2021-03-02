@@ -35,6 +35,17 @@ final class CachedEdgeQLHttpClient implements EdgeQLHttpClientInterface
 
             return $this->client->get($query, $variables);
         }
+
+        $cacheKey = $variables['cacheKey'];
+
+        if ($this->pool->hasItem($cacheKey)) {
+            $item = $this->pool->getItem($cacheKey);
+
+            return new HttpResult(
+                $item->get()['data'],
+                $item->get()['errors'] ?? []
+            );
+        }
     }
 
     /**

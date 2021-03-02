@@ -42,7 +42,8 @@ $client = new EdgeQLHttpClient('http://127.0.0.1:<instance-port>/db/<database-na
 $result = $client->post("SELECT User FILTER User.name = 'John';");
 ```
 
-// TO DOCUMENT
+Both approach returns a `HttpResult`, this class act as a wrapper around `Set` 
+(more info in the [documentation](https://www.edgedb.com/docs/clients/00_python/api/types)).
 
 ## GraphQL
 

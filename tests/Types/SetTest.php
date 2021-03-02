@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace EdgeDB;
+namespace Tests\EdgeDB\Types;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-interface HttpClientInterface
+final class SetTest extends TestCase
 {
 }
