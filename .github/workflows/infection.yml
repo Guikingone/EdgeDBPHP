@@ -25,20 +25,16 @@ jobs:
           EDGEDB_PASSWORD: 'edgedb'
           EDGEDB_DATABASE: 'edgedb'
           VERSION: ${{ matrix.edgedb-version }}
+        volumes:
+          - dbschema:/dbschema
         ports:
           - 5656:5656
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install edgedb CLI
+      - name: Install Edgedb CLI
         uses: edgedb/setup-edgedb@v1
-        with:
-          cli-version: ${{ matrix.edgedb-version }}
-
-      - name: Execute EdgeDB migrations
-        uses: edgedb/setup-edgedb@v1
-        run: edgedb -I edgedb migrate --non-interactive --schema-dir .github/dbschema
         with:
           cli-version: ${{ matrix.edgedb-version }}
 
