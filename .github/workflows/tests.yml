@@ -21,6 +21,8 @@ jobs:
       edgedb:
         image: edgedb/edgedb
         env:
+          EDGEDB_USER: 'edgedb'
+          EDGEDB_PASSWORD: 'edgedb'
           VERSION: ${{ matrix.edgedb-version }}
         ports:
           - 5656:5656
@@ -28,10 +30,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install edgedb server
+      - name: Install edgedb CLI
         uses: edgedb/setup-edgedb@v1
         with:
-          server-version: ${{ matrix.edgedb-version }}
+          cli-version: ${{ matrix.edgedb-version }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -48,3 +50,5 @@ jobs:
 
       - name: PHPUnit
         run: php vendor/bin/phpunit
+        env:
+          EDGEDB_SERVER: 'edgedb:5656'
