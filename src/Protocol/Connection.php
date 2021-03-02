@@ -22,7 +22,6 @@ final class Connection
 
     public function connect()
     {
-
     }
 
     public function query(string $query, array $arguments = null): Set
@@ -32,7 +31,6 @@ final class Connection
         try {
             $set = $this->fetch($query, $arguments, false, false);
         } catch (Throwable $exception) {
-
         } finally {
             $this->leaveOperation();
 
@@ -42,7 +40,6 @@ final class Connection
 
     public function queryOne(string $query, array $arguments)
     {
-
     }
 
     public function queryJson(string $query, array $arguments): string
@@ -52,7 +49,6 @@ final class Connection
         try {
             $set = $this->fetch($query, $arguments, true, false);
         } catch (Throwable $exception) {
-
         } finally {
             $this->leaveOperation();
 
@@ -67,7 +63,6 @@ final class Connection
         try {
             $set = $this->fetch($query, $arguments, true, true);
         } catch (Throwable $exception) {
-
         } finally {
             $this->leaveOperation();
 
@@ -77,17 +72,14 @@ final class Connection
 
     public function execute(string $query)
     {
-
     }
 
     public function transaction(bool $isolated, bool $readOnly, bool $deferrable): Transaction
     {
-
     }
 
     private function fetch(string $query, array $arguments, bool $asJson, bool $expectOne)
     {
-
     }
 
     private function enterOperation(): void

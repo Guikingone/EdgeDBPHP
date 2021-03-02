@@ -27,7 +27,6 @@ final class WriteBuffer
 
     public function writeString(string $string): self
     {
-
     }
 
     public function writeInt32(int $number): self
@@ -43,7 +42,6 @@ final class WriteBuffer
 
     public function unwrap(): Buffer
     {
-
     }
 
     public function getPosition(): int
@@ -61,6 +59,5 @@ final class WriteBuffer
 
     private function reAllocate(int $newSize): void
     {
-
     }
 }

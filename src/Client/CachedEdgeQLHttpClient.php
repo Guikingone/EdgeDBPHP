@@ -42,6 +42,5 @@ final class CachedEdgeQLHttpClient implements EdgeQLHttpClientInterface
      */
     public function post(string $query, array $variables = []): HttpResult
     {
-
     }
 }

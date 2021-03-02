@@ -9,5 +9,4 @@ namespace EdgeDB\Protocol;
  */
 final class AsyncClient
 {
-
 }

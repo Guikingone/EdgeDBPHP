@@ -9,7 +9,7 @@ on:
 
 jobs:
   tests:
-    name: Tests with PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }} dependencies
+    name: Tests with PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }} dependencies | EdgeDB ${{ matrix.edgedb-version }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: true

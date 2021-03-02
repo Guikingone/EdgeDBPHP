@@ -9,5 +9,4 @@ namespace EdgeDB\Types;
  */
 final class Set
 {
-
 }

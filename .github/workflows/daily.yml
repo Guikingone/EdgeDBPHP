@@ -4,16 +4,15 @@ on:
     - cron: "0 0 * * *"
 jobs:
   edgedb:
-    name: PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }}
+    name: PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }} dependencies | EdgeDB ${{ matrix.edgedb-version }}
     # https://hub.docker.com/_/ubuntu/
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: true
       matrix:
-        php-versions: [ '7.4', '8.0' ]
+        php-versions: ['7.4', '8.0']
         composer-dependencies: ['highest', 'lowest']
         edgedb-version: ['stable', 'nightly']
-
     steps:
       # https://github.com/actions/checkout (official)
       - name: Checkout

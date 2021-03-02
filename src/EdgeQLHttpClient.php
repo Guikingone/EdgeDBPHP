@@ -20,7 +20,7 @@ use function sprintf;
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  */
-final class EdgeQLHttpClient extends AbstractHttpClient  implements EdgeQLHttpClientInterface
+final class EdgeQLHttpClient extends AbstractHttpClient implements EdgeQLHttpClientInterface
 {
     /**
      * {@inheritdoc}

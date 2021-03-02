@@ -1,6 +1,6 @@
 DOCKER 		   = @docker
 DOCKER_COMPOSE = @docker-compose
-PHP            = $(DOCKER_COMPOSE) run --rm php
+PHP            = @symfony php
 
 .DEFAULT_GOAL := help
 
@@ -42,10 +42,6 @@ php-cs-fixer-dry: ## Run PHP-CS-FIXER in --dry-run mode
 php-cs-fixer-dry:
 	$(PHP) vendor/bin/php-cs-fixer fix . --dry-run
 
-phpstan: ## Run PHPStan (the configuration must be defined in phpstan.neon)
-phpstan: phpstan.neon
-	$(PHP) vendor/bin/rector analyse /app/src
-
 rector-dry: ## Run Rector in --dry-run mode
 rector-dry: rector.php
 	$(PHP) vendor/bin/rector process --dry-run --config rector.php
@@ -53,6 +49,14 @@ rector-dry: rector.php
 rector: ## Run Rector
 rector: rector.php
 	$(PHP) vendor/bin/rector process --config rector.php
+
+phpstan: ## Run PHPStan (the configuration must be defined in phpstan.neon.dist)
+phpstan: phpstan.neon.dist
+	$(PHP) vendor/bin/phpstan analyse --memory-limit 2G --xdebug
+
+psalm: ## Run Psalm
+psalm: psalm.xml
+	$(PHP) vendor/bin/psalm --show-info=true
 
 ##
 ## Tests

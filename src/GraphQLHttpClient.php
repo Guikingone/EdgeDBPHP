@@ -21,7 +21,6 @@ final class GraphQLHttpClient extends AbstractHttpClient implements GraphQLHttpC
      */
     public function get(string $query, ?string $operationName = null, ?array $options = []): HttpResult
     {
-
     }
 
     /**
@@ -47,7 +46,6 @@ final class GraphQLHttpClient extends AbstractHttpClient implements GraphQLHttpC
         try {
             $response = $this->client->sendRequest($requestClosure());
         } catch (Throwable $throwable) {
-
         }
     }
 }
