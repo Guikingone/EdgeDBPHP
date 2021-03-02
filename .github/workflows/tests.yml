@@ -19,7 +19,9 @@ jobs:
         edgedb-version: ['stable', 'nightly']
     services:
       edgedb:
-        image: edbgedb/edgedb:${{ matrix.edgedb-version }}
+        image: edgedb/edgedb
+        env:
+          VERSION: ${{ matrix.edgedb-version }}
         ports:
           - 5656:5656
     steps:
