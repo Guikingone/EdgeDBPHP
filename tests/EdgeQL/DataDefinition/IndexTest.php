@@ -30,11 +30,11 @@ final class IndexTest extends TestCase
             Index::alter('.name', Annotation::create('foo', 'bar'))
         );
         self::assertSame(
-            'ALTER INDEX ON (.name) { ALTER ANNOTATION foo := bar }',
+            'ALTER INDEX ON (.name) { ALTER ANNOTATION foo := bar; }',
             Index::alter('.name', Annotation::alter('foo', 'bar'))
         );
         self::assertSame(
-            'ALTER INDEX ON (.name) { DROP ANNOTATION foo }',
+            'ALTER INDEX ON (.name) { DROP ANNOTATION foo; }',
             Index::alter('.name', Annotation::drop('foo'))
         );
     }

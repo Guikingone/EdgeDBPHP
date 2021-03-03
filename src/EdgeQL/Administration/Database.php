@@ -20,7 +20,7 @@ final class Database
      */
     public static function create(string $name): string
     {
-        return sprintf('CREATE %s %s', self::IDENTIFIER, $name);
+        return sprintf('CREATE %s %s;', self::IDENTIFIER, $name);
     }
 
     /**
@@ -28,6 +28,6 @@ final class Database
      */
     public static function drop(string $name): string
     {
-        return sprintf('DROP %s %s', self::IDENTIFIER, $name);
+        return sprintf('DROP %s %s;', self::IDENTIFIER, $name);
     }
 }

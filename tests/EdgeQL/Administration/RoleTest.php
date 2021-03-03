@@ -44,7 +44,6 @@ final class RoleTest extends TestCase
 
     public function testRoleCanBeAlteredWithRoleExtension(): void
     {
-
     }
 
     public function testRoleCanBeDropped(): void

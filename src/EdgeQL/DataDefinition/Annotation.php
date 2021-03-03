@@ -20,7 +20,7 @@ final class Annotation
      */
     public static function createAbstract(string $name, string $value): string
     {
-        return sprintf('CREATE ABSTRACT %s %s := %s', self::IDENTIFIER, $name, $value);
+        return sprintf('CREATE ABSTRACT %s %s := %s;', self::IDENTIFIER, $name, $value);
     }
 
     /**
@@ -31,18 +31,18 @@ final class Annotation
         $alter = sprintf('ALTER ABSTRACT %s %s := %s', self::IDENTIFIER, $name, $value);
 
         if (null !== $subCommand && (0 === strpos($subCommand, 'RENAME TO'))) {
-            return sprintf('%s { %s }', $alter, $subCommand);
+            return sprintf('%s { %s };', $alter, $subCommand);
         }
 
         if (null !== $subCommand && (0 === strpos($subCommand, 'ALTER ANNOTATION'))) {
-            return sprintf('%s { %s }', $alter, $subCommand);
+            return sprintf('%s { %s };', $alter, $subCommand);
         }
 
         if (null !== $subCommand && (0 === strpos($subCommand, 'DROP ANNOTATION'))) {
-            return sprintf('%s { %s }', $alter, $subCommand);
+            return sprintf('%s { %s };', $alter, $subCommand);
         }
 
-        return $alter;
+        return sprintf('%s;', $alter);
     }
 
     /**
@@ -50,7 +50,7 @@ final class Annotation
      */
     public static function dropAbstract(string $name): string
     {
-        return sprintf('DROP ABSTRACT %s %s', self::IDENTIFIER, $name);
+        return sprintf('DROP ABSTRACT %s %s;', self::IDENTIFIER, $name);
     }
 
     /**
@@ -66,7 +66,7 @@ final class Annotation
      */
     public static function alter(string $name, string $value): string
     {
-        return sprintf('ALTER %s %s := %s', self::IDENTIFIER, $name, $value);
+        return sprintf('ALTER %s %s := %s;', self::IDENTIFIER, $name, $value);
     }
 
     /**
@@ -74,6 +74,6 @@ final class Annotation
      */
     public static function drop(string $name): string
     {
-        return sprintf('DROP %s %s', self::IDENTIFIER, $name);
+        return sprintf('DROP %s %s;', self::IDENTIFIER, $name);
     }
 }

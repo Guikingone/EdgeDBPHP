@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EdgeDB\EdgeQL\DataDefinition;
 
+use EdgeDB\EdgeQL\Statement\With;
 use function sprintf;
 
 /**
@@ -23,7 +24,7 @@ final class ObjectType
         $create = sprintf('CREATE %s TYPE %s', null !== $abstract && $abstract ? 'ABSTRACT' : '', $name);
 
         if (null !== $with) {
-            $create = sprintf('WITH %s %s', $with, $create);
+            $create = sprintf('WITH %s %s', With::new($with), $create);
         }
 
         return $create;
@@ -34,7 +35,6 @@ final class ObjectType
      */
     public static function alter(string $name, ?string $subCommand = null): string
     {
-
     }
 
     /**

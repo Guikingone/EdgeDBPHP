@@ -7,6 +7,7 @@ namespace EdgeDB\EdgeQL\DataDefinition;
 use EdgeDB\Exception\InvalidArgumentException;
 use function in_array;
 use function sprintf;
+use function strpos;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
@@ -17,11 +18,12 @@ final class Migration
 {
     private const IDENTIFIER = 'MIGRATION';
 
+    /**
+     * {@see https://www.edgedb.com/docs/edgeql/ddl/migrations#start-migration}
+     */
     public static function start(string $statement): string
     {
-        // TODO
-
-        return sprintf('START %s TO { %s }', self::IDENTIFIER, $statement);
+        return sprintf('START %s TO { %s };', self::IDENTIFIER, $statement);
     }
 
     /**
@@ -29,9 +31,27 @@ final class Migration
      */
     public static function create(string $statement): string
     {
-        // TODO
+        if (false !== strpos($statement, 'DATABASE')) {
+            throw new InvalidArgumentException('Database related statements are not allowed');
+        }
 
-        return sprintf('CREATE %s { %s }', self::IDENTIFIER, $statement);
+        if (false !== strpos($statement, 'ROLE')) {
+            throw new InvalidArgumentException('Role related statements are not allowed');
+        }
+
+        if (false !== strpos($statement, 'CONFIGURE')) {
+            throw new InvalidArgumentException('Configuration related statements are not allowed');
+        }
+
+        if (false !== strpos($statement, 'MIGRATION')) {
+            throw new InvalidArgumentException('Migration related statements are not allowed');
+        }
+
+        if (false !== strpos($statement, 'TRANSACTION')) {
+            throw new InvalidArgumentException('Transaction related statements are not allowed');
+        }
+
+        return sprintf('CREATE %s { %s };', self::IDENTIFIER, $statement);
     }
 
     /**
@@ -39,7 +59,7 @@ final class Migration
      */
     public static function abort(): string
     {
-        return sprintf('ABORT %s', self::IDENTIFIER);
+        return sprintf('ABORT %s;', self::IDENTIFIER);
     }
 
     /**
@@ -47,7 +67,7 @@ final class Migration
      */
     public static function populate(): string
     {
-        return sprintf('POPULATE %s', self::IDENTIFIER);
+        return sprintf('POPULATE %s;', self::IDENTIFIER);
     }
 
     /**
@@ -59,7 +79,7 @@ final class Migration
             throw new InvalidArgumentException(sprintf('The format "%s" is not supported', $as));
         }
 
-        return sprintf('DESCRIBE CURRENT %s AS %s', self::IDENTIFIER, $as);
+        return sprintf('DESCRIBE CURRENT %s AS %s;', self::IDENTIFIER, $as);
     }
 
     /**
@@ -67,6 +87,6 @@ final class Migration
      */
     public static function commit(): string
     {
-        return sprintf('COMMIT %s', self::IDENTIFIER);
+        return sprintf('COMMIT %s;', self::IDENTIFIER);
     }
 }

@@ -14,11 +14,11 @@ final class DatabaseTest extends TestCase
 {
     public function testDatabaseCanBeCreated(): void
     {
-        self::assertSame('CREATE DATABASE foo', Database::create('foo'));
+        self::assertSame('CREATE DATABASE foo;', Database::create('foo'));
     }
 
     public function testDatabaseCanBeDropped(): void
     {
-        self::assertSame('DROP DATABASE foo', Database::drop('foo'));
+        self::assertSame('DROP DATABASE foo;', Database::drop('foo'));
     }
 }
