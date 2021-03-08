@@ -8,6 +8,7 @@ use ArrayIterator;
 use Closure;
 use Countable;
 use IteratorAggregate;
+use function array_filter;
 use function count;
 use const ARRAY_FILTER_USE_BOTH;
 
