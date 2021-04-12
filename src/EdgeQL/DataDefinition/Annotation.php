@@ -20,7 +20,7 @@ final class Annotation
      */
     public static function createAbstract(string $name, string $value): string
     {
-        return sprintf('CREATE ABSTRACT %s %s := %s;', self::IDENTIFIER, $name, $value);
+        return sprintf("CREATE ABSTRACT %s %s := '%s';", self::IDENTIFIER, $name, $value);
     }
 
     /**
@@ -28,7 +28,7 @@ final class Annotation
      */
     public static function alterAbstract(string $name, string $value, ?string $subCommand = null): string
     {
-        $alter = sprintf('ALTER ABSTRACT %s %s := %s', self::IDENTIFIER, $name, $value);
+        $alter = sprintf("ALTER ABSTRACT %s %s := '%s'", self::IDENTIFIER, $name, $value);
 
         if (null !== $subCommand && (0 === strpos($subCommand, 'RENAME TO'))) {
             return sprintf('%s { %s };', $alter, $subCommand);
@@ -58,7 +58,7 @@ final class Annotation
      */
     public static function create(string $name, string $value): string
     {
-        return sprintf('CREATE %s %s := %s;', self::IDENTIFIER, $name, $value);
+        return sprintf("CREATE %s %s := '%s';", self::IDENTIFIER, $name, $value);
     }
 
     /**
@@ -66,7 +66,7 @@ final class Annotation
      */
     public static function alter(string $name, string $value): string
     {
-        return sprintf('ALTER %s %s := %s;', self::IDENTIFIER, $name, $value);
+        return sprintf("ALTER %s %s := '%s';", self::IDENTIFIER, $name, $value);
     }
 
     /**

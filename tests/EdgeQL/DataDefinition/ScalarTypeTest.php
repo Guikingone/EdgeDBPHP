@@ -36,7 +36,7 @@ final class ScalarTypeTest extends TestCase
     public function testScalarTypeCanBeWithAnnotationSubCommand(): void
     {
         self::assertSame(
-            'CREATE SCALAR TYPE foo { CREATE ANNOTATION foo := bar; }',
+            "CREATE SCALAR TYPE foo { CREATE ANNOTATION foo := 'bar'; }",
             ScalarType::create('foo', null, false, null, Annotation::create('foo', 'bar'))
         );
     }

@@ -15,7 +15,7 @@ final class AnnotationTest extends TestCase
     public function testAbstractAnnotationCanBeCreated(): void
     {
         self::assertSame(
-            'CREATE ABSTRACT ANNOTATION foo := bar;',
+            "CREATE ABSTRACT ANNOTATION foo := 'bar';",
             Annotation::createAbstract('foo', 'bar')
         );
     }
@@ -23,19 +23,19 @@ final class AnnotationTest extends TestCase
     public function testAbstractAnnotationCanBeAltered(): void
     {
         self::assertSame(
-            'ALTER ABSTRACT ANNOTATION foo := bar;',
+            "ALTER ABSTRACT ANNOTATION foo := 'bar';",
             Annotation::alterAbstract('foo', 'bar')
         );
         self::assertSame(
-            'ALTER ABSTRACT ANNOTATION foo := bar { RENAME TO random };',
+            "ALTER ABSTRACT ANNOTATION foo := 'bar' { RENAME TO random };",
             Annotation::alterAbstract('foo', 'bar', 'RENAME TO random')
         );
         self::assertSame(
-            'ALTER ABSTRACT ANNOTATION foo := bar { ALTER ANNOTATION random := bar; };',
+            "ALTER ABSTRACT ANNOTATION foo := 'bar' { ALTER ANNOTATION random := 'bar'; };",
             Annotation::alterAbstract('foo', 'bar', Annotation::alter('random', 'bar'))
         );
         self::assertSame(
-            'ALTER ABSTRACT ANNOTATION foo := bar { DROP ANNOTATION random; };',
+            "ALTER ABSTRACT ANNOTATION foo := 'bar' { DROP ANNOTATION random; };",
             Annotation::alterAbstract('foo', 'bar', Annotation::drop('random'))
         );
     }
@@ -47,12 +47,12 @@ final class AnnotationTest extends TestCase
 
     public function testAnnotationCanBeCreated(): void
     {
-        self::assertSame('CREATE ANNOTATION foo := bar;', Annotation::create('foo', 'bar'));
+        self::assertSame("CREATE ANNOTATION foo := 'bar';", Annotation::create('foo', 'bar'));
     }
 
     public function testAnnotationCanBeAltered(): void
     {
-        self::assertSame('ALTER ANNOTATION foo := bar;', Annotation::alter('foo', 'bar'));
+        self::assertSame("ALTER ANNOTATION foo := 'bar';", Annotation::alter('foo', 'bar'));
     }
 
     public function testAnnotationCanBeDropped(): void
