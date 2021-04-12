@@ -17,7 +17,7 @@ final class IndexTest extends TestCase
     {
         self::assertSame('CREATE INDEX ON (.name)', Index::create('.name'));
         self::assertSame(
-            'CREATE INDEX ON (.name) { CREATE ANNOTATION foo := bar }',
+            'CREATE INDEX ON (.name) { CREATE ANNOTATION foo := bar; }',
             Index::create('.name', Annotation::create('foo', 'bar'))
         );
     }
@@ -26,7 +26,7 @@ final class IndexTest extends TestCase
     {
         self::assertSame('ALTER INDEX ON (.name)', Index::alter('.name'));
         self::assertSame(
-            'ALTER INDEX ON (.name) { CREATE ANNOTATION foo := bar }',
+            'ALTER INDEX ON (.name) { CREATE ANNOTATION foo := bar; }',
             Index::alter('.name', Annotation::create('foo', 'bar'))
         );
         self::assertSame(

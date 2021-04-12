@@ -15,8 +15,11 @@ final class Link
 {
     private const IDENTIFIER = 'LINK';
 
+    /**
+     * {@internal https://www.edgedb.com/docs/edgeql/ddl/links/#drop-link}
+     */
     public static function drop(string $name, bool $abstract = false): string
     {
-        return sprintf('%s %s %s', $abstract ? 'DROP ABSTRACT' : 'DROP', self::IDENTIFIER, $name);
+        return sprintf('%s %s %s;', $abstract ? 'DROP ABSTRACT' : 'DROP', self::IDENTIFIER, $name);
     }
 }

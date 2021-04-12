@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EdgeDB\EdgeQL\Statement;
 
+use function sprintf;
+
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
  *
@@ -18,7 +20,7 @@ final class Savepoint
      */
     public static function create(string $name): string
     {
-        return sprintf('DECLARE %s %s', self::IDENTIFIER, $name);
+        return sprintf('DECLARE %s %s;', self::IDENTIFIER, $name);
     }
 
     /**
@@ -26,7 +28,7 @@ final class Savepoint
      */
     public static function release(string $name): string
     {
-        return sprintf('RELEASE %s %s', self::IDENTIFIER, $name);
+        return sprintf('RELEASE %s %s;', self::IDENTIFIER, $name);
     }
 
     /**
@@ -34,6 +36,6 @@ final class Savepoint
      */
     public static function rollback(string $name): string
     {
-        return sprintf('ROLLBACK TO %s %s', self::IDENTIFIER, $name);
+        return sprintf('ROLLBACK TO %s %s;', self::IDENTIFIER, $name);
     }
 }

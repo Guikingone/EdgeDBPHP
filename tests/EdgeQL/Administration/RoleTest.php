@@ -34,12 +34,12 @@ final class RoleTest extends TestCase
 
     public function testRoleCanBeAlteredAndRenamed(): void
     {
-        self::assertSame('ALTER ROLE foo { RENAME TO bar }', Role::renameTo('foo', 'bar'));
+        self::assertSame('ALTER ROLE foo { RENAME TO bar; };', Role::renameTo('foo', 'bar'));
     }
 
     public function testRoleCanBeAlteredWithNewPassword(): void
     {
-        self::assertSame('ALTER ROLE foo { SET password := bar }', Role::newPassword('foo', 'bar'));
+        self::assertSame('ALTER ROLE foo { SET password := bar; };', Role::newPassword('foo', 'bar'));
     }
 
     public function testRoleCanBeAlteredWithRoleExtension(): void
@@ -48,6 +48,6 @@ final class RoleTest extends TestCase
 
     public function testRoleCanBeDropped(): void
     {
-        self::assertSame('DROP ROLE foo', Role::drop('foo'));
+        self::assertSame('DROP ROLE foo;', Role::drop('foo'));
     }
 }

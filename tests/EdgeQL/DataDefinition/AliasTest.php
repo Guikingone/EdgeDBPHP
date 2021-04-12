@@ -34,7 +34,7 @@ final class AliasTest extends TestCase
     public function testAliasCanBeCreatedWithConstraint(): void
     {
         self::assertSame(
-            'CREATE ALIAS foo { CREATE ANNOTATION foo := bar };',
+            'CREATE ALIAS foo { CREATE ANNOTATION foo := bar; };',
             Alias::create('foo', null, null, [
                 Annotation::create('foo', 'bar'),
             ])
@@ -44,7 +44,7 @@ final class AliasTest extends TestCase
     public function testAliasCanBeCreatedWithExpressionAndConstraint(): void
     {
         self::assertSame(
-            'CREATE ALIAS foo { USING SELECT Users; CREATE ANNOTATION foo := bar };',
+            'CREATE ALIAS foo { USING SELECT Users; CREATE ANNOTATION foo := bar; };',
             Alias::create('foo', null, 'SELECT Users', [
                 Annotation::create('foo', 'bar'),
             ])

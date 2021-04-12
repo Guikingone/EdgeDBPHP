@@ -14,12 +14,12 @@ final class ModuleTest extends TestCase
 {
     public function testModuleCanBeCreated(): void
     {
-        self::assertSame('CREATE MODULE foo', Module::create('foo'));
-        self::assertSame('CREATE MODULE foo IF NOT EXISTS', Module::create('foo', true));
+        self::assertSame('CREATE MODULE foo;', Module::create('foo'));
+        self::assertSame('CREATE MODULE foo IF NOT EXISTS;', Module::create('foo', true));
     }
 
     public function testModuleCanBeDropped(): void
     {
-        self::assertSame('DROP MODULE foo', Module::drop('foo'));
+        self::assertSame('DROP MODULE foo;', Module::drop('foo'));
     }
 }

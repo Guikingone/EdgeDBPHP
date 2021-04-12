@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EdgeDB\EdgeQL\DataDefinition;
 
 use function sprintf;
-use function trim;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
@@ -19,9 +18,12 @@ final class Module
     /**
      * {@see https://www.edgedb.com/docs/edgeql/ddl/modules/#create-module}
      */
-    public static function create(string $name, bool $ifNotExist = false): string
+    public static function create(string $name, bool $ifNotExists = false): string
     {
-        return trim(sprintf('CREATE %s %s %s', self::IDENTIFIER, $name, $ifNotExist ? 'IF NOT EXISTS' : ''));
+        return $ifNotExists
+            ? sprintf('CREATE %s %s IF NOT EXISTS;', self::IDENTIFIER, $name)
+            : sprintf('CREATE %s %s;', self::IDENTIFIER, $name)
+        ;
     }
 
     /**
@@ -29,6 +31,6 @@ final class Module
      */
     public static function drop(string $name): string
     {
-        return sprintf('DROP %s %s', self::IDENTIFIER, $name);
+        return sprintf('DROP %s %s;', self::IDENTIFIER, $name);
     }
 }

@@ -41,7 +41,7 @@ final class Role
      */
     public static function renameTo(string $role, string $renameTo): string
     {
-        return sprintf('ALTER %s %s { RENAME TO %s }', self::IDENTIFIER, $role, $renameTo);
+        return sprintf('ALTER %s %s { RENAME TO %s; };', self::IDENTIFIER, $role, $renameTo);
     }
 
     /**
@@ -49,7 +49,7 @@ final class Role
      */
     public static function newPassword(string $role, string $password): string
     {
-        return sprintf('ALTER %s %s { SET password := %s }', self::IDENTIFIER, $role, $password);
+        return sprintf('ALTER %s %s { SET password := %s; };', self::IDENTIFIER, $role, $password);
     }
 
     /**
@@ -57,6 +57,6 @@ final class Role
      */
     public static function drop(string $role): string
     {
-        return sprintf('DROP %s %s', self::IDENTIFIER, $role);
+        return sprintf('DROP %s %s;', self::IDENTIFIER, $role);
     }
 }

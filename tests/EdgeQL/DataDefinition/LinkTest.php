@@ -22,7 +22,7 @@ final class LinkTest extends TestCase
 
     public function testLinkCanBeDropped(): void
     {
-        self::assertSame('DROP LINK foo', Link::drop('foo'));
-        self::assertSame('DROP ABSTRACT LINK foo', Link::drop('foo', true));
+        self::assertSame('DROP LINK foo;', Link::drop('foo'));
+        self::assertSame('DROP ABSTRACT LINK foo;', Link::drop('foo', true));
     }
 }

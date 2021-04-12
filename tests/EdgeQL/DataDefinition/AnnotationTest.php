@@ -47,7 +47,7 @@ final class AnnotationTest extends TestCase
 
     public function testAnnotationCanBeCreated(): void
     {
-        self::assertSame('CREATE ANNOTATION foo := bar', Annotation::create('foo', 'bar'));
+        self::assertSame('CREATE ANNOTATION foo := bar;', Annotation::create('foo', 'bar'));
     }
 
     public function testAnnotationCanBeAltered(): void

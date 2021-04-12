@@ -14,16 +14,16 @@ final class SavepointTest extends TestCase
 {
     public function testSavepointCanBeDeclared(): void
     {
-        self::assertSame('DECLARE SAVEPOINT foo', Savepoint::create('foo'));
+        self::assertSame('DECLARE SAVEPOINT foo;', Savepoint::create('foo'));
     }
 
     public function testSavepointCanBeReleased(): void
     {
-        self::assertSame('RELEASE SAVEPOINT foo', Savepoint::release('foo'));
+        self::assertSame('RELEASE SAVEPOINT foo;', Savepoint::release('foo'));
     }
 
     public function testSavepointCanBeRolledBack(): void
     {
-        self::assertSame('ROLLBACK TO SAVEPOINT foo', Savepoint::rollback('foo'));
+        self::assertSame('ROLLBACK TO SAVEPOINT foo;', Savepoint::rollback('foo'));
     }
 }

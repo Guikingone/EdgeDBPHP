@@ -58,7 +58,7 @@ final class Annotation
      */
     public static function create(string $name, string $value): string
     {
-        return sprintf('CREATE %s %s := %s', self::IDENTIFIER, $name, $value);
+        return sprintf('CREATE %s %s := %s;', self::IDENTIFIER, $name, $value);
     }
 
     /**
