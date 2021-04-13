@@ -31,7 +31,7 @@ final class Annotation
         $alter = sprintf("ALTER ABSTRACT %s %s := '%s'", self::IDENTIFIER, $name, $value);
 
         if (null !== $subCommand && (0 === strpos($subCommand, 'RENAME TO'))) {
-            return sprintf('%s { %s };', $alter, $subCommand);
+            return sprintf('%s { %s; };', $alter, $subCommand);
         }
 
         if (null !== $subCommand && (0 === strpos($subCommand, 'ALTER ANNOTATION'))) {

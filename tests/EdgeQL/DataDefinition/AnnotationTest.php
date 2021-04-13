@@ -27,7 +27,7 @@ final class AnnotationTest extends TestCase
             Annotation::alterAbstract('foo', 'bar')
         );
         self::assertSame(
-            "ALTER ABSTRACT ANNOTATION foo := 'bar' { RENAME TO random };",
+            "ALTER ABSTRACT ANNOTATION foo := 'bar' { RENAME TO random; };",
             Annotation::alterAbstract('foo', 'bar', 'RENAME TO random')
         );
         self::assertSame(
