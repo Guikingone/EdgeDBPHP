@@ -41,6 +41,10 @@
 			"Tests\\EdgeDB\\Types\\": "tests/Types/"
 		}
 	},
+	"config": {
+		"classmap-authoritative": true,
+		"optimize-autoloader": true
+	},
 	"require": {
 		"php": ">=7.4",
 		"ext-json": "*",
