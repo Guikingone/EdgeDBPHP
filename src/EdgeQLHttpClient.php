@@ -28,7 +28,7 @@ final class EdgeQLHttpClient extends AbstractHttpClient implements EdgeQLHttpCli
     public function get(string $query, array $variables = []): HttpResult
     {
         return $this->sendRequest(function () use ($query, $variables): RequestInterface {
-            $request = $this->requestFactory->createRequest('GET', $this->endpoint)
+            $request = $this->requestFactory->createRequest('GET', $this->getEndpoint())
                 ->withHeader('Accept', 'application/json')
             ;
 
@@ -48,7 +48,7 @@ final class EdgeQLHttpClient extends AbstractHttpClient implements EdgeQLHttpCli
     public function post(string $query, array $variables = []): HttpResult
     {
         return $this->sendRequest(function () use ($query, $variables): RequestInterface {
-            $request = $this->requestFactory->createRequest('POST', $this->endpoint)
+            $request = $this->requestFactory->createRequest('POST', $this->getEndpoint())
                 ->withHeader('Content-Type', 'application/json')
                 ->withHeader('Accept', 'application/json')
                 ->withBody($this->streamFactory->createStream(json_encode([

@@ -55,4 +55,14 @@ final class CredentialsTest extends TestCase
         self::assertSame(5656, $credentials->getPort());
         self::assertSame('foo', $credentials->getDatabase());
     }
+
+    public function testCredentialsCanBeLoaded(): void
+    {
+        $credentials = Credentials::load(__DIR__.'/assets/edgedb_valid_conf.json');
+
+        self::assertSame('edgedb', $credentials->getUsername());
+        self::assertSame('foo', $credentials->getPassword());
+        self::assertSame(10711, $credentials->getPort());
+        self::assertSame('edgedb', $credentials->getDatabase());
+    }
 }
