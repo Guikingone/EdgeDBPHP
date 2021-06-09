@@ -41,7 +41,7 @@ final class Credentials
 
         $self->port = $credentials['port'];
         $self->database = $credentials['database'];
-        $self->username = $credentials['username'];
+        $self->username = $credentials['user'];
         $self->password = $credentials['password'];
 
         return $self;
