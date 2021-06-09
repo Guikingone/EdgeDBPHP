@@ -9,6 +9,7 @@ use EdgeDB\Exception\InvalidArgumentException;
 use function array_key_exists;
 use function file_exists;
 use function file_get_contents;
+use function is_bool;
 use function is_int;
 use function is_string;
 use function json_decode;
@@ -30,7 +31,13 @@ final class Credentials
         }
 
         $self = new self();
-        $credentials = $self->validateCredentials(json_decode(file_get_contents($path), true));
+
+        $credentialsContent = file_get_contents($path);
+        if (is_bool($credentialsContent)) {
+            throw new RuntimeException('The credentials cannot be loaded');
+        }
+
+        $credentials = $self->validateCredentials(json_decode($credentialsContent, true));
 
         $self->port = $credentials['port'];
         $self->database = $credentials['database'];
@@ -60,6 +67,11 @@ final class Credentials
         return $this->password;
     }
 
+    /**
+     * @param array<string, int|string> $credentials
+     *
+     * @return array<string, int|string>
+     */
     private function validateCredentials(array $credentials = []): array
     {
         $credentials['port'] = $credentials['port'] ?? 5656;

@@ -7,6 +7,7 @@ This library provides HTTP clients to interact with both EdgeQL and GraphQL endp
 
 Extra features:  
 
+- [Pool](#pool)
 - [Cache](#cache)
 
 ## EdgeQL
@@ -64,5 +65,7 @@ use EdgeDB\GraphQLHttpClient;
 $client = new GraphQLHttpClient('http://127.0.0.1:<instance-port>/db/<database-name>/edgeql');
 $result = $client->get("SELECT User FILTER User.name = 'John';");
 ```
+
+# Pool
 
 ## Cache

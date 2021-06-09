@@ -17,6 +17,7 @@ jobs:
         php-versions: ['7.4', '8.0']
         composer-dependencies: ['highest', 'lowest']
         edgedb-version: ['stable', 'nightly']
+
     services:
       edgedb:
         image: edgedb/edgedb
