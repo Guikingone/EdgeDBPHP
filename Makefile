@@ -35,12 +35,12 @@ vendor: composer.json composer.lock
 .PHONY: php-cs-fixer php-cs-fixer-dry phpstan rector-dry rector
 
 php-cs-fixer: ## Run PHP-CS-FIXER and fix the errors
-php-cs-fixer:
-	$(PHP) vendor/bin/php-cs-fixer fix .
+php-cs-fixer: .php-cs-fixer.dist.php
+	$(PHP) vendor/bin/php-cs-fixer fix . --allow-risky=yes
 
 php-cs-fixer-dry: ## Run PHP-CS-FIXER in --dry-run mode
-php-cs-fixer-dry:
-	$(PHP) vendor/bin/php-cs-fixer fix . --dry-run
+php-cs-fixer-dry: .php-cs-fixer.dist.php
+	$(PHP) vendor/bin/php-cs-fixer fix . --dry-run --allow-risky=yes
 
 rector-dry: ## Run Rector in --dry-run mode
 rector-dry: rector.php
@@ -70,4 +70,4 @@ tests: phpunit.xml.dist
 
 infection: ## Launch Infection
 infection: infection.json.dist
-	$(PHP) vendor/bin/infection --min-covered-msi=90 --min-msi=80
+	$(PHP) vendor/bin/infection

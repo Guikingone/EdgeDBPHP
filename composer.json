@@ -58,8 +58,8 @@
 	},
 	"require-dev": {
 		"composer/package-versions-deprecated": "^1.11",
-		"friendsofphp/php-cs-fixer": "^2.17",
-		"infection/infection": "^0.21",
+		"friendsofphp/php-cs-fixer": "^3.0",
+		"infection/infection": "^0.23",
 		"nikic/php-parser": "^4.10.3",
 		"phpstan/phpstan": "^0.12",
 		"phpstan/phpstan-phpunit": "^0.12.17",

@@ -29,15 +29,13 @@ final class GraphQLHttpClient extends AbstractHttpClient implements GraphQLHttpC
     public function post(string $query, ?string $operationName = null, ?array $options = []): HttpResult
     {
         return $this->sendRequest(function () use ($query, $operationName, $options): RequestInterface {
-            $request = $this->requestFactory->createRequest('POST', $this->getEndpoint())
+            return $this->requestFactory->createRequest('POST', $this->getEndpoint())
                 ->withHeader('Content-Type', 'application/json')
                 ->withHeader('Accept', 'application/json')
                 ->withBody($this->streamFactory->createStream(json_encode([
                     'query' => $query,
                 ])))
             ;
-
-            return $request;
         }, $query, $operationName, $options);
     }
 

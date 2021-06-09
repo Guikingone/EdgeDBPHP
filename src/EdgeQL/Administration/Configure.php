@@ -36,9 +36,7 @@ final class Configure
         }
 
         if (false !== strpos($value, ', ')) {
-            return sprintf("%s %s SET %s := {%s};", self::IDENTIFIER, $scope, $parameter, implode(', ', array_map(function (string $value): string {
-                return sprintf("'%s'", $value);
-            }, explode(', ', $value))));
+            return sprintf("%s %s SET %s := {%s};", self::IDENTIFIER, $scope, $parameter, implode(', ', array_map(fn (string $value): string => sprintf("'%s'", $value), explode(', ', $value))));
         }
 
         return sprintf("%s %s SET %s := '%s';", self::IDENTIFIER, $scope, $parameter, $value);
