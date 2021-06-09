@@ -35,7 +35,7 @@ final class EdgeQLHttpClient extends AbstractHttpClient implements EdgeQLHttpCli
             $request->getUri()->withQuery(sprintf('?query=%s', $query));
 
             if ([] !== $variables) {
-                $request = $request->getUri()->withQuery(sprintf('&variables=%s', json_encode($variables)));
+                $request->getUri()->withQuery(sprintf('&variables=%s', json_encode($variables)));
             }
 
             return $request;
@@ -57,7 +57,7 @@ final class EdgeQLHttpClient extends AbstractHttpClient implements EdgeQLHttpCli
             ;
 
             if ([] !== $variables) {
-                $request = $request->withBody($this->streamFactory->createStream(json_encode([
+                $request->withBody($this->streamFactory->createStream(json_encode([
                     'query' => $query,
                     'variables' => json_encode($variables),
                 ])));

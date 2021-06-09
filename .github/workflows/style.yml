@@ -6,16 +6,19 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   php-cs-fixer:
-    name: PHP CS Fixer with PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }} dependencies
-    runs-on: ubuntu-20.04
+    name: PHP CS Fixer with PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }} dependencies - ${{ matrix.os }} OS
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
       matrix:
         php-versions: ['7.4', '8.0']
         composer-dependencies: ['highest', 'lowest']
+        os: ['ubuntu-latest', 'macOS-latest', 'windows-latest']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,6 +37,4 @@ jobs:
           composer-options: "--prefer-stable"
 
       - name: PHP CS Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga
-        with:
-          args: --dry-run . --diff-format=udiff
+        run: php vendor/bin/php-cs-fixer fix --dry-run

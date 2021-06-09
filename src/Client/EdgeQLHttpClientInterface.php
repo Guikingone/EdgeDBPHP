@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace EdgeDB\Client;
 
+use EdgeDB\Protocol\ClientInterface;
 use EdgeDB\Query\HttpResult;
 
 /**
  * @author Guillaume Loulier <contact@guillaumeloulier.fr>
+ *
+ * {@see https://www.edgedb.com/docs/clients/90_edgeql/protocol}
  */
-interface EdgeQLHttpClientInterface
+interface EdgeQLHttpClientInterface extends ClientInterface
 {
     /**
      * @param string               $query

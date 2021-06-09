@@ -43,7 +43,8 @@
 	},
 	"config": {
 		"classmap-authoritative": true,
-		"optimize-autoloader": true
+		"optimize-autoloader": true,
+		"sort-packages": true
 	},
 	"require": {
 		"php": ">=7.4",
