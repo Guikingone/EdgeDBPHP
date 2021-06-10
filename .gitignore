@@ -1,4 +1,12 @@
+# Build
 vendor
+composer.lock
+.phpunit.result.cache
+.php-cs-fixer.cache
 
 # Extra
 edge.php
+
+# Logs
+infection.log
+summary.log

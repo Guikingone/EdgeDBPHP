@@ -2,42 +2,12 @@ Escaped mutants:
 ================
 
 
-1) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:68    [M] DecrementInteger
+1) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:68    [M] LessThan
 
 --- Original
 +++ New
 @@ @@
-     }
-     private function validateCredentials(array $credentials = [])
-     {
--        $credentials['port'] = $credentials['port'] ?? 5656;
-+        $credentials['port'] = $credentials['port'] ?? 5655;
-         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
-             throw new RuntimeException('The port is not valid');
-         }
-
-
-2) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:68    [M] IncrementInteger
-
---- Original
-+++ New
-@@ @@
-     }
-     private function validateCredentials(array $credentials = [])
-     {
--        $credentials['port'] = $credentials['port'] ?? 5656;
-+        $credentials['port'] = $credentials['port'] ?? 5657;
-         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
-             throw new RuntimeException('The port is not valid');
-         }
-
-
-3) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:70    [M] LessThan
-
---- Original
-+++ New
-@@ @@
-     private function validateCredentials(array $credentials = [])
+     private function validateCredentials(array $credentials = []) : array
      {
          $credentials['port'] = $credentials['port'] ?? 5656;
 -        if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
@@ -47,12 +17,12 @@ Escaped mutants:
          if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
 
 
-4) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:70    [M] GreaterThan
+2) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:68    [M] GreaterThan
 
 --- Original
 +++ New
 @@ @@
-     private function validateCredentials(array $credentials = [])
+     private function validateCredentials(array $credentials = []) : array
      {
          $credentials['port'] = $credentials['port'] ?? 5656;
 -        if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
@@ -60,6 +30,36 @@ Escaped mutants:
              throw new RuntimeException('The port is not valid');
          }
          if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
+
+
+3) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:72    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
+             throw new RuntimeException('The port is not valid');
+         }
+-        if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
++        if (array_key_exists('host', $credentials) && is_string($credentials['host'])) {
+             throw new RuntimeException('The host is not valid');
+         }
+         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
+
+
+4) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:80    [M] LogicalNot
+
+--- Original
++++ New
+@@ @@
+         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
+             throw new RuntimeException('The database is not valid');
+         }
+-        if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
++        if (array_key_exists('user', $credentials) && is_string($credentials['user'])) {
+             throw new RuntimeException('The user is not valid');
+         }
+         if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
 
 
 5) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:19    [M] DecrementInteger
@@ -233,22 +233,7 @@ Not Covered mutants:
              throw $exception;
 
 
-10) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:101    [M] ArrayItemRemoval
-
---- Original
-+++ New
-@@ @@
-             $response = $this->client->sendRequest($requestClosure());
-             $this->dispatch(new EdgeQLClientQueryEvent($method, $query, $variables));
-         } catch (Throwable $exception) {
--            $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
-+            $this->logger->critical('An error occurred when trying to send the request', ['variables' => $variables, 'error' => $exception->getMessage()]);
-             throw $exception;
-         }
-         $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
-
-
-11) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:101    [M] MethodCallRemoval
+10) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:101    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -258,6 +243,21 @@ Not Covered mutants:
          } catch (Throwable $exception) {
 -            $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
 +            
+             throw $exception;
+         }
+         $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
+
+
+11) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:101    [M] ArrayItemRemoval
+
+--- Original
++++ New
+@@ @@
+             $response = $this->client->sendRequest($requestClosure());
+             $this->dispatch(new EdgeQLClientQueryEvent($method, $query, $variables));
+         } catch (Throwable $exception) {
+-            $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
++            $this->logger->critical('An error occurred when trying to send the request', ['variables' => $variables, 'error' => $exception->getMessage()]);
              throw $exception;
          }
          $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
@@ -293,22 +293,7 @@ Not Covered mutants:
          $body = json_decode($response->getBody()->getContents(), true);
 
 
-14) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:110    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-             $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
-             throw $exception;
-         }
--        $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
-+        
-         $body = json_decode($response->getBody()->getContents(), true);
-         if (!is_array($body)) {
-             throw new RuntimeException('The response body cannot be parsed');
-
-
-15) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:110    [M] ArrayItemRemoval
+14) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:110    [M] ArrayItemRemoval
 
 --- Original
 +++ New
@@ -318,6 +303,21 @@ Not Covered mutants:
          }
 -        $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
 +        $this->logger->info('A query has succeed', ['variables' => $variables, 'method' => $method]);
+         $body = json_decode($response->getBody()->getContents(), true);
+         if (!is_array($body)) {
+             throw new RuntimeException('The response body cannot be parsed');
+
+
+15) /Users/guillaume/Projects/edgedb-php/src/EdgeQLHttpClient.php:110    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             $this->logger->critical('An error occurred when trying to send the request', ['query' => $query, 'variables' => $variables, 'error' => $exception->getMessage()]);
+             throw $exception;
+         }
+-        $this->logger->info('A query has succeed', ['query' => $query, 'variables' => $variables, 'method' => $method]);
++        
          $body = json_decode($response->getBody()->getContents(), true);
          if (!is_array($body)) {
              throw new RuntimeException('The response body cannot be parsed');
@@ -501,22 +501,7 @@ Not Covered mutants:
      /**
 
 
-28) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:55    [M] FalseValue
-
---- Original
-+++ New
-@@ @@
-     }
-     private function parseDsn(string $dsn) : array
-     {
--        if (false === ($parsedDsn = parse_url($dsn))) {
-+        if (true === ($parsedDsn = parse_url($dsn))) {
-             throw new InvalidArgumentException('The given DSN is not valid');
-         }
-         if (!isset($parsedDsn['scheme'])) {
-
-
-29) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:55    [M] Identical
+28) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:55    [M] Identical
 
 --- Original
 +++ New
@@ -526,6 +511,21 @@ Not Covered mutants:
      {
 -        if (false === ($parsedDsn = parse_url($dsn))) {
 +        if (false !== ($parsedDsn = parse_url($dsn))) {
+             throw new InvalidArgumentException('The given DSN is not valid');
+         }
+         if (!isset($parsedDsn['scheme'])) {
+
+
+29) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:55    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+     }
+     private function parseDsn(string $dsn) : array
+     {
+-        if (false === ($parsedDsn = parse_url($dsn))) {
++        if (true === ($parsedDsn = parse_url($dsn))) {
              throw new InvalidArgumentException('The given DSN is not valid');
          }
          if (!isset($parsedDsn['scheme'])) {
@@ -621,7 +621,22 @@ Not Covered mutants:
      {
 
 
-36) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] Coalesce
+36) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+         if (!isset($parsedDsn['host'])) {
+             throw new InvalidArgumentException('The host must be defined');
+         }
+-        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
++        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5657, 'database' => $parsedDsn['path'] ?? null];
+     }
+     private function handleConfiguration(array $configuration) : void
+     {
+
+
+37) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] Coalesce
 
 --- Original
 +++ New
@@ -636,7 +651,7 @@ Not Covered mutants:
      {
 
 
-37) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] DecrementInteger
+38) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -646,21 +661,6 @@ Not Covered mutants:
          }
 -        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
 +        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5655, 'database' => $parsedDsn['path'] ?? null];
-     }
-     private function handleConfiguration(array $configuration) : void
-     {
-
-
-38) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:72    [M] IncrementInteger
-
---- Original
-+++ New
-@@ @@
-         if (!isset($parsedDsn['host'])) {
-             throw new InvalidArgumentException('The host must be defined');
-         }
--        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5656, 'database' => $parsedDsn['path'] ?? null];
-+        return ['scheme' => $parsedDsn['scheme'], 'host' => $parsedDsn['host'], 'user' => isset($parsedDsn['user']) ? urldecode($parsedDsn['user']) : null, 'password' => isset($parsedDsn['pass']) ? urldecode($parsedDsn['pass']) : null, 'port' => $parsedDsn['port'] ?? 5657, 'database' => $parsedDsn['path'] ?? null];
      }
      private function handleConfiguration(array $configuration) : void
      {
@@ -816,7 +816,22 @@ Not Covered mutants:
          $resolver->setAllowedTypes('password', ['string', 'null']);
 
 
-49) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:93    [M] ArrayItemRemoval
+49) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:93    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
+         $resolver->setAllowedTypes('scheme', ['string']);
+         $resolver->setAllowedTypes('host', ['string']);
+-        $resolver->setAllowedTypes('port', ['int']);
++        
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+         $resolver->setAllowedTypes('database', ['string', 'null']);
+
+
+50) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:93    [M] ArrayItemRemoval
 
 --- Original
 +++ New
@@ -831,37 +846,7 @@ Not Covered mutants:
          $resolver->setAllowedTypes('database', ['string', 'null']);
 
 
-50) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:93    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         $resolver->setDefaults(['scheme' => 'edgedb', 'host' => '127.0.0.1', 'port' => 5656, 'user' => 'edgedb', 'password' => null, 'database' => 'edgedb', 'admin' => false, 'timeout' => null]);
-         $resolver->setAllowedTypes('scheme', ['string']);
-         $resolver->setAllowedTypes('host', ['string']);
--        $resolver->setAllowedTypes('port', ['int']);
-+        
-         $resolver->setAllowedTypes('user', ['string', 'null']);
-         $resolver->setAllowedTypes('password', ['string', 'null']);
-         $resolver->setAllowedTypes('database', ['string', 'null']);
-
-
-51) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:94    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         $resolver->setAllowedTypes('scheme', ['string']);
-         $resolver->setAllowedTypes('host', ['string']);
-         $resolver->setAllowedTypes('port', ['int']);
--        $resolver->setAllowedTypes('user', ['string', 'null']);
-+        
-         $resolver->setAllowedTypes('password', ['string', 'null']);
-         $resolver->setAllowedTypes('database', ['string', 'null']);
-         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
-
-
-52) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:94    [M] ArrayItemRemoval
+51) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:94    [M] ArrayItemRemoval
 
 --- Original
 +++ New
@@ -876,22 +861,22 @@ Not Covered mutants:
          $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
 
 
-53) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:95    [M] MethodCallRemoval
+52) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:94    [M] MethodCallRemoval
 
 --- Original
 +++ New
 @@ @@
+         $resolver->setAllowedTypes('scheme', ['string']);
          $resolver->setAllowedTypes('host', ['string']);
          $resolver->setAllowedTypes('port', ['int']);
-         $resolver->setAllowedTypes('user', ['string', 'null']);
--        $resolver->setAllowedTypes('password', ['string', 'null']);
+-        $resolver->setAllowedTypes('user', ['string', 'null']);
 +        
+         $resolver->setAllowedTypes('password', ['string', 'null']);
          $resolver->setAllowedTypes('database', ['string', 'null']);
          $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
-             if (null !== $host) {
 
 
-54) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:95    [M] ArrayItemRemoval
+53) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:95    [M] ArrayItemRemoval
 
 --- Original
 +++ New
@@ -906,22 +891,22 @@ Not Covered mutants:
              if (null !== $host) {
 
 
-55) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:96    [M] MethodCallRemoval
+54) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:95    [M] MethodCallRemoval
 
 --- Original
 +++ New
 @@ @@
+         $resolver->setAllowedTypes('host', ['string']);
          $resolver->setAllowedTypes('port', ['int']);
          $resolver->setAllowedTypes('user', ['string', 'null']);
-         $resolver->setAllowedTypes('password', ['string', 'null']);
--        $resolver->setAllowedTypes('database', ['string', 'null']);
+-        $resolver->setAllowedTypes('password', ['string', 'null']);
 +        
+         $resolver->setAllowedTypes('database', ['string', 'null']);
          $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
              if (null !== $host) {
-                 return true;
 
 
-56) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:96    [M] ArrayItemRemoval
+55) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:96    [M] ArrayItemRemoval
 
 --- Original
 +++ New
@@ -931,6 +916,21 @@ Not Covered mutants:
          $resolver->setAllowedTypes('password', ['string', 'null']);
 -        $resolver->setAllowedTypes('database', ['string', 'null']);
 +        $resolver->setAllowedTypes('database', ['null']);
+         $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
+             if (null !== $host) {
+                 return true;
+
+
+56) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:96    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $resolver->setAllowedTypes('port', ['int']);
+         $resolver->setAllowedTypes('user', ['string', 'null']);
+         $resolver->setAllowedTypes('password', ['string', 'null']);
+-        $resolver->setAllowedTypes('database', ['string', 'null']);
++        
          $resolver->setAllowedValues('host', function ($host) use($configuration) : bool {
              if (null !== $host) {
                  return true;
@@ -1386,22 +1386,7 @@ Not Covered mutants:
                  return true;
 
 
-87) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:151    [M] FalseValue
-
---- Original
-+++ New
-@@ @@
-             if (null !== $database) {
-                 return true;
-             }
--            if (false !== getenv('EDGEDB_DATABASE')) {
-+            if (true !== getenv('EDGEDB_DATABASE')) {
-                 return true;
-             }
-             if (null !== $configuration['database']) {
-
-
-88) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:151    [M] NotIdentical
+87) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:151    [M] NotIdentical
 
 --- Original
 +++ New
@@ -1411,6 +1396,21 @@ Not Covered mutants:
              }
 -            if (false !== getenv('EDGEDB_DATABASE')) {
 +            if (false === getenv('EDGEDB_DATABASE')) {
+                 return true;
+             }
+             if (null !== $configuration['database']) {
+
+
+88) /Users/guillaume/Projects/edgedb-php/src/Protocol/BlockingClient.php:151    [M] FalseValue
+
+--- Original
++++ New
+@@ @@
+             if (null !== $database) {
+                 return true;
+             }
+-            if (false !== getenv('EDGEDB_DATABASE')) {
++            if (true !== getenv('EDGEDB_DATABASE')) {
                  return true;
              }
              if (null !== $configuration['database']) {
@@ -1731,97 +1731,7 @@ Not Covered mutants:
      }
 
 
-110) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:46    [M] PublicVisibility
-
---- Original
-+++ New
-@@ @@
-         $self->password = $credentials['password'];
-         return $self;
-     }
--    public function getPort() : int
-+    protected function getPort() : int
-     {
-         return $this->port;
-     }
-
-
-111) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:51    [M] PublicVisibility
-
---- Original
-+++ New
-@@ @@
-     {
-         return $this->port;
-     }
--    public function getDatabase() : string
-+    protected function getDatabase() : string
-     {
-         return $this->database;
-     }
-
-
-112) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:56    [M] PublicVisibility
-
---- Original
-+++ New
-@@ @@
-     {
-         return $this->database;
-     }
--    public function getUsername() : string
-+    protected function getUsername() : string
-     {
-         return $this->username;
-     }
-
-
-113) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:61    [M] PublicVisibility
-
---- Original
-+++ New
-@@ @@
-     {
-         return $this->username;
-     }
--    public function getPassword() : string
-+    protected function getPassword() : string
-     {
-         return $this->password;
-     }
-
-
-114) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:74    [M] LogicalNot
-
---- Original
-+++ New
-@@ @@
-         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
-             throw new RuntimeException('The port is not valid');
-         }
--        if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
-+        if (array_key_exists('host', $credentials) && is_string($credentials['host'])) {
-             throw new RuntimeException('The host is not valid');
-         }
-         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
-
-
-115) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:74    [M] LogicalAnd
-
---- Original
-+++ New
-@@ @@
-         if (!is_int($credentials['port']) || ($credentials['port'] < 1 || $credentials['port'] > 65535)) {
-             throw new RuntimeException('The port is not valid');
-         }
--        if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
-+        if (array_key_exists('host', $credentials) || !is_string($credentials['host'])) {
-             throw new RuntimeException('The host is not valid');
-         }
-         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
-
-
-116) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:75    [M] Throw_
+110) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:73    [M] Throw_
 
 --- Original
 +++ New
@@ -1836,37 +1746,7 @@ Not Covered mutants:
              throw new RuntimeException('The database is not valid');
 
 
-117) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:78    [M] LogicalNot
-
---- Original
-+++ New
-@@ @@
-         if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
-             throw new RuntimeException('The host is not valid');
-         }
--        if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
-+        if (array_key_exists('database', $credentials) && is_string($credentials['database'])) {
-             throw new RuntimeException('The database is not valid');
-         }
-         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
-
-
-118) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:78    [M] LogicalAnd
-
---- Original
-+++ New
-@@ @@
-         if (array_key_exists('host', $credentials) && !is_string($credentials['host'])) {
-             throw new RuntimeException('The host is not valid');
-         }
--        if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
-+        if (array_key_exists('database', $credentials) || !is_string($credentials['database'])) {
-             throw new RuntimeException('The database is not valid');
-         }
-         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
-
-
-119) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:79    [M] Throw_
+111) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:77    [M] Throw_
 
 --- Original
 +++ New
@@ -1881,37 +1761,7 @@ Not Covered mutants:
              throw new RuntimeException('The user is not valid');
 
 
-120) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:82    [M] LogicalAnd
-
---- Original
-+++ New
-@@ @@
-         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
-             throw new RuntimeException('The database is not valid');
-         }
--        if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
-+        if (array_key_exists('user', $credentials) || !is_string($credentials['user'])) {
-             throw new RuntimeException('The user is not valid');
-         }
-         if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
-
-
-121) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:82    [M] LogicalNot
-
---- Original
-+++ New
-@@ @@
-         if (array_key_exists('database', $credentials) && !is_string($credentials['database'])) {
-             throw new RuntimeException('The database is not valid');
-         }
--        if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
-+        if (array_key_exists('user', $credentials) && is_string($credentials['user'])) {
-             throw new RuntimeException('The user is not valid');
-         }
-         if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
-
-
-122) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:83    [M] Throw_
+112) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:81    [M] Throw_
 
 --- Original
 +++ New
@@ -1926,37 +1776,7 @@ Not Covered mutants:
              throw new RuntimeException('The password is not valid');
 
 
-123) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:86    [M] LogicalNot
-
---- Original
-+++ New
-@@ @@
-         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
-             throw new RuntimeException('The user is not valid');
-         }
--        if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
-+        if (array_key_exists('password', $credentials) && is_string($credentials['password'])) {
-             throw new RuntimeException('The password is not valid');
-         }
-     }
- }
-
-124) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:86    [M] LogicalAnd
-
---- Original
-+++ New
-@@ @@
-         if (array_key_exists('user', $credentials) && !is_string($credentials['user'])) {
-             throw new RuntimeException('The user is not valid');
-         }
--        if (array_key_exists('password', $credentials) && !is_string($credentials['password'])) {
-+        if (array_key_exists('password', $credentials) || !is_string($credentials['password'])) {
-             throw new RuntimeException('The password is not valid');
-         }
-     }
- }
-
-125) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:87    [M] Throw_
+113) /Users/guillaume/Projects/edgedb-php/src/Protocol/Credentials.php:85    [M] Throw_
 
 --- Original
 +++ New
@@ -1967,11 +1787,266 @@ Not Covered mutants:
 -            throw new RuntimeException('The password is not valid');
 +            new RuntimeException('The password is not valid');
          }
+         return $credentials;
      }
  }
 
+114) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:21    [M] OneZeroInteger
 
-126) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:12    [M] PublicVisibility
+--- Original
++++ New
+@@ @@
+     public function __construct(Buffer $buffer)
+     {
+         $this->buffer = $buffer;
+-        $this->position = 0;
++        $this->position = 1;
+     }
+     public static function init(ReadBuffer $readBuffer, Buffer $buffer) : void
+     {
+
+
+115) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:21    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     public function __construct(Buffer $buffer)
+     {
+         $this->buffer = $buffer;
+-        $this->position = 0;
++        $this->position = -1;
+     }
+     public static function init(ReadBuffer $readBuffer, Buffer $buffer) : void
+     {
+
+
+116) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:24    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->buffer = $buffer;
+         $this->position = 0;
+     }
+-    public static function init(ReadBuffer $readBuffer, Buffer $buffer) : void
++    protected static function init(ReadBuffer $readBuffer, Buffer $buffer) : void
+     {
+         $readBuffer->buffer = $buffer;
+         $readBuffer->position = 0;
+
+
+117) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:27    [M] OneZeroInteger
+
+--- Original
++++ New
+@@ @@
+     public static function init(ReadBuffer $readBuffer, Buffer $buffer) : void
+     {
+         $readBuffer->buffer = $buffer;
+-        $readBuffer->position = 0;
++        $readBuffer->position = 1;
+         // TODO
+     }
+     public function finish() : void
+
+
+118) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:27    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     public static function init(ReadBuffer $readBuffer, Buffer $buffer) : void
+     {
+         $readBuffer->buffer = $buffer;
+-        $readBuffer->position = 0;
++        $readBuffer->position = -1;
+         // TODO
+     }
+     public function finish() : void
+
+
+119) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:31    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $readBuffer->position = 0;
+         // TODO
+     }
+-    public function finish() : void
++    protected function finish() : void
+     {
+         if ($this->length !== $this->position) {
+             throw new BufferError('Unexpected trailing data in buffer');
+
+
+120) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:33    [M] NotIdentical
+
+--- Original
++++ New
+@@ @@
+     }
+     public function finish() : void
+     {
+-        if ($this->length !== $this->position) {
++        if ($this->length === $this->position) {
+             throw new BufferError('Unexpected trailing data in buffer');
+         }
+     }
+
+
+121) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:34    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+     public function finish() : void
+     {
+         if ($this->length !== $this->position) {
+-            throw new BufferError('Unexpected trailing data in buffer');
++            new BufferError('Unexpected trailing data in buffer');
+         }
+     }
+     public function discard(int $size) : void
+
+
+122) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:38    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+             throw new BufferError('Unexpected trailing data in buffer');
+         }
+     }
+-    public function discard(int $size) : void
++    protected function discard(int $size) : void
+     {
+         if ($this->position + $size > $this->length) {
+             throw new BufferError('Buffer overread');
+
+
+123) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:40    [M] GreaterThan
+
+--- Original
++++ New
+@@ @@
+     }
+     public function discard(int $size) : void
+     {
+-        if ($this->position + $size > $this->length) {
++        if ($this->position + $size >= $this->length) {
+             throw new BufferError('Buffer overread');
+         }
+         $this->position += $size;
+
+
+124) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:40    [M] GreaterThanNegotiation
+
+--- Original
++++ New
+@@ @@
+     }
+     public function discard(int $size) : void
+     {
+-        if ($this->position + $size > $this->length) {
++        if ($this->position + $size <= $this->length) {
+             throw new BufferError('Buffer overread');
+         }
+         $this->position += $size;
+
+
+125) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:40    [M] Plus
+
+--- Original
++++ New
+@@ @@
+     }
+     public function discard(int $size) : void
+     {
+-        if ($this->position + $size > $this->length) {
++        if ($this->position - $size > $this->length) {
+             throw new BufferError('Buffer overread');
+         }
+         $this->position += $size;
+
+
+126) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:41    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+     public function discard(int $size) : void
+     {
+         if ($this->position + $size > $this->length) {
+-            throw new BufferError('Buffer overread');
++            new BufferError('Buffer overread');
+         }
+         $this->position += $size;
+     }
+
+
+127) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:44    [M] Assignment
+
+--- Original
++++ New
+@@ @@
+         if ($this->position + $size > $this->length) {
+             throw new BufferError('Buffer overread');
+         }
+-        $this->position += $size;
++        $this->position = $size;
+     }
+     public function getPosition() : int
+     {
+
+
+128) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:44    [M] PlusEqual
+
+--- Original
++++ New
+@@ @@
+         if ($this->position + $size > $this->length) {
+             throw new BufferError('Buffer overread');
+         }
+-        $this->position += $size;
++        $this->position -= $size;
+     }
+     public function getPosition() : int
+     {
+
+
+129) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:47    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         }
+         $this->position += $size;
+     }
+-    public function getPosition() : int
++    protected function getPosition() : int
+     {
+         return $this->position;
+     }
+
+
+130) /Users/guillaume/Projects/edgedb-php/src/Protocol/ReadBuffer.php:52    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     {
+         return $this->position;
+     }
+-    public function getLength() : int
++    protected function getLength() : int
+     {
+         return $this->length;
+     }
+ }
+
+131) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:12    [M] PublicVisibility
 
 --- Original
 +++ New
@@ -1986,7 +2061,7 @@ Not Covered mutants:
      public function commit()
 
 
-127) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:17    [M] PublicVisibility
+132) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:17    [M] PublicVisibility
 
 --- Original
 +++ New
@@ -2001,7 +2076,7 @@ Not Covered mutants:
      public function rollback()
 
 
-128) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:22    [M] PublicVisibility
+133) /Users/guillaume/Projects/edgedb-php/src/Protocol/Transaction.php:22    [M] PublicVisibility
 
 --- Original
 +++ New
@@ -2016,7 +2091,7 @@ Not Covered mutants:
  }
 
 
-129) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:28    [M] PublicVisibility
+134) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:28    [M] PublicVisibility
 
 --- Original
 +++ New
@@ -2024,29 +2099,179 @@ Not Covered mutants:
      {
          $this->position = 0;
      }
+-    public function writeString(string $string) : self
++    protected function writeString(string $string) : self
+     {
+     }
+     public function writeInt32(int $number) : self
+
+
+135) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:33    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+     public function writeString(string $string) : self
+     {
+     }
 -    public function writeInt32(int $number) : self
 +    protected function writeInt32(int $number) : self
+     {
+         $this->ensureAllocated(4);
+         // TODO
+
+
+136) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:35    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     public function writeInt32(int $number) : self
+     {
+-        $this->ensureAllocated(4);
++        $this->ensureAllocated(5);
+         // TODO
+         $this->position = +4;
+         return $this;
+
+
+137) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:35    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     }
+     public function writeInt32(int $number) : self
+     {
+-        $this->ensureAllocated(4);
++        
+         // TODO
+         $this->position = +4;
+         return $this;
+
+
+138) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:35    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     public function writeInt32(int $number) : self
+     {
+-        $this->ensureAllocated(4);
++        $this->ensureAllocated(3);
+         // TODO
+         $this->position = +4;
+         return $this;
+
+
+139) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:39    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+     {
+         $this->ensureAllocated(4);
+         // TODO
+-        $this->position = +4;
++        $this->position = +5;
+         return $this;
+     }
+     public function unwrap() : Buffer
+
+
+140) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:39    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     {
+         $this->ensureAllocated(4);
+         // TODO
+-        $this->position = +4;
++        $this->position = +3;
+         return $this;
+     }
+     public function unwrap() : Buffer
+
+
+141) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:44    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->position = +4;
+         return $this;
+     }
+-    public function unwrap() : Buffer
++    protected function unwrap() : Buffer
      {
      }
      public function getPosition() : int
 
 
-130) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:20    [M] OneZeroInteger
+142) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:56    [M] Plus
 
 --- Original
 +++ New
 @@ @@
-     public function __construct()
-     {
-         $this->buffer = new WriteBuffer();
--        $this->messagePosition = -1;
-+        $this->messagePosition = -0;
      }
-     public function reset() : self
+     private function ensureAllocated(int $extraLength) : void
      {
+-        $newSize = $this->position + $extraLength;
++        $newSize = $this->position - $extraLength;
+         if ($newSize > $this->size) {
+             $this->reAllocate($newSize);
+         }
 
 
-131) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:20    [M] IncrementInteger
+143) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:57    [M] GreaterThan
+
+--- Original
++++ New
+@@ @@
+     private function ensureAllocated(int $extraLength) : void
+     {
+         $newSize = $this->position + $extraLength;
+-        if ($newSize > $this->size) {
++        if ($newSize >= $this->size) {
+             $this->reAllocate($newSize);
+         }
+     }
+
+
+144) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:57    [M] GreaterThanNegotiation
+
+--- Original
++++ New
+@@ @@
+     private function ensureAllocated(int $extraLength) : void
+     {
+         $newSize = $this->position + $extraLength;
+-        if ($newSize > $this->size) {
++        if ($newSize <= $this->size) {
+             $this->reAllocate($newSize);
+         }
+     }
+
+
+145) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteBuffer.php:58    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     {
+         $newSize = $this->position + $extraLength;
+         if ($newSize > $this->size) {
+-            $this->reAllocate($newSize);
++            
+         }
+     }
+     private function reAllocate(int $newSize) : void
+
+
+146) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:20    [M] IncrementInteger
 
 --- Original
 +++ New
@@ -2061,7 +2286,22 @@ Not Covered mutants:
      {
 
 
-132) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:23    [M] PublicVisibility
+147) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:20    [M] OneZeroInteger
+
+--- Original
++++ New
+@@ @@
+     public function __construct()
+     {
+         $this->buffer = new WriteBuffer();
+-        $this->messagePosition = -1;
++        $this->messagePosition = -0;
+     }
+     public function reset() : self
+     {
+
+
+148) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:23    [M] PublicVisibility
 
 --- Original
 +++ New
@@ -2076,7 +2316,7 @@ Not Covered mutants:
          $this->buffer->reset();
 
 
-133) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:25    [M] OneZeroInteger
+149) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:25    [M] OneZeroInteger
 
 --- Original
 +++ New
@@ -2091,7 +2331,7 @@ Not Covered mutants:
      }
 
 
-134) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:25    [M] IncrementInteger
+150) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:25    [M] IncrementInteger
 
 --- Original
 +++ New
@@ -2106,7 +2346,7 @@ Not Covered mutants:
      }
 
 
-135) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:26    [M] MethodCallRemoval
+151) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:26    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -2121,7 +2361,7 @@ Not Covered mutants:
      public function beginMessage(string $value) : self
 
 
-136) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:31    [M] PublicVisibility
+152) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:31    [M] PublicVisibility
 
 --- Original
 +++ New
@@ -2136,22 +2376,7 @@ Not Covered mutants:
              throw new BufferError('The previous message is not finished');
 
 
-137) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:33    [M] GreaterThanOrEqualTo
-
---- Original
-+++ New
-@@ @@
-     }
-     public function beginMessage(string $value) : self
-     {
--        if ($this->messagePosition >= 0) {
-+        if ($this->messagePosition > 0) {
-             throw new BufferError('The previous message is not finished');
-         }
-         $this->messagePosition = $this->buffer->getPosition();
-
-
-138) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:33    [M] GreaterThanOrEqualToNegotiation
+153) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:33    [M] GreaterThanOrEqualToNegotiation
 
 --- Original
 +++ New
@@ -2166,7 +2391,22 @@ Not Covered mutants:
          $this->messagePosition = $this->buffer->getPosition();
 
 
-139) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:34    [M] Throw_
+154) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:33    [M] GreaterThanOrEqualTo
+
+--- Original
++++ New
+@@ @@
+     }
+     public function beginMessage(string $value) : self
+     {
+-        if ($this->messagePosition >= 0) {
++        if ($this->messagePosition > 0) {
+             throw new BufferError('The previous message is not finished');
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+
+
+155) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:34    [M] Throw_
 
 --- Original
 +++ New
@@ -2181,7 +2421,7 @@ Not Covered mutants:
          $this->buffer->writeChar($value);
 
 
-140) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:38    [M] MethodCallRemoval
+156) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:38    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -2194,24 +2434,9 @@ Not Covered mutants:
          $this->buffer->writeInt32(0);
          return $this;
      }
- }
-
-141) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         }
-         $this->messagePosition = $this->buffer->getPosition();
-         $this->buffer->writeChar($value);
--        $this->buffer->writeInt32(0);
-+        
-         return $this;
-     }
- }
 
 
-142) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] OneZeroInteger
+157) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] OneZeroInteger
 
 --- Original
 +++ New
@@ -2223,10 +2448,25 @@ Not Covered mutants:
 +        $this->buffer->writeInt32(1);
          return $this;
      }
- }
+     public function endMessage() : self
 
 
-143) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] DecrementInteger
+158) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         }
+         $this->messagePosition = $this->buffer->getPosition();
+         $this->buffer->writeChar($value);
+-        $this->buffer->writeInt32(0);
++        
+         return $this;
+     }
+     public function endMessage() : self
+
+
+159) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:39    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -2238,10 +2478,310 @@ Not Covered mutants:
 +        $this->buffer->writeInt32(-1);
          return $this;
      }
+     public function endMessage() : self
+
+
+160) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:44    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->buffer->writeInt32(0);
+         return $this;
+     }
+-    public function endMessage() : self
++    protected function endMessage() : self
+     {
+         if ($this->messagePosition < 0) {
+             throw new BufferError('No current message');
+
+
+161) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:46    [M] LessThan
+
+--- Original
++++ New
+@@ @@
+     }
+     public function endMessage() : self
+     {
+-        if ($this->messagePosition < 0) {
++        if ($this->messagePosition <= 0) {
+             throw new BufferError('No current message');
+         }
+         // TODO
+
+
+162) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:46    [M] LessThanNegotiation
+
+--- Original
++++ New
+@@ @@
+     }
+     public function endMessage() : self
+     {
+-        if ($this->messagePosition < 0) {
++        if ($this->messagePosition >= 0) {
+             throw new BufferError('No current message');
+         }
+         // TODO
+
+
+163) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:47    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+     public function endMessage() : self
+     {
+         if ($this->messagePosition < 0) {
+-            throw new BufferError('No current message');
++            new BufferError('No current message');
+         }
+         // TODO
+         $this->messagePosition = -1;
+
+
+164) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:52    [M] IncrementInteger
+
+--- Original
++++ New
+@@ @@
+             throw new BufferError('No current message');
+         }
+         // TODO
+-        $this->messagePosition = -1;
++        $this->messagePosition = -2;
+         return $this;
+     }
+     public function writeChar(string $char) : self
+
+
+165) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:52    [M] OneZeroInteger
+
+--- Original
++++ New
+@@ @@
+             throw new BufferError('No current message');
+         }
+         // TODO
+-        $this->messagePosition = -1;
++        $this->messagePosition = -0;
+         return $this;
+     }
+     public function writeChar(string $char) : self
+
+
+166) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:57    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->messagePosition = -1;
+         return $this;
+     }
+-    public function writeChar(string $char) : self
++    protected function writeChar(string $char) : self
+     {
+         if ($this->messagePosition > 0) {
+             throw new BufferError('No current message');
+
+
+167) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:59    [M] GreaterThanNegotiation
+
+--- Original
++++ New
+@@ @@
+     }
+     public function writeChar(string $char) : self
+     {
+-        if ($this->messagePosition > 0) {
++        if ($this->messagePosition <= 0) {
+             throw new BufferError('No current message');
+         }
+         $this->buffer->writeChar($char);
+
+
+168) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:59    [M] GreaterThan
+
+--- Original
++++ New
+@@ @@
+     }
+     public function writeChar(string $char) : self
+     {
+-        if ($this->messagePosition > 0) {
++        if ($this->messagePosition >= 0) {
+             throw new BufferError('No current message');
+         }
+         $this->buffer->writeChar($char);
+
+
+169) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:60    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+     public function writeChar(string $char) : self
+     {
+         if ($this->messagePosition > 0) {
+-            throw new BufferError('No current message');
++            new BufferError('No current message');
+         }
+         $this->buffer->writeChar($char);
+         return $this;
+
+
+170) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:63    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         if ($this->messagePosition > 0) {
+             throw new BufferError('No current message');
+         }
+-        $this->buffer->writeChar($char);
++        
+         return $this;
+     }
+     public function writeFlush() : self
+
+
+171) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:68    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->buffer->writeChar($char);
+         return $this;
+     }
+-    public function writeFlush() : self
++    protected function writeFlush() : self
+     {
+         if ($this->messagePosition >= 0) {
+             throw new BufferError('The previous message is not finished');
+
+
+172) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:70    [M] GreaterThanOrEqualTo
+
+--- Original
++++ New
+@@ @@
+     }
+     public function writeFlush() : self
+     {
+-        if ($this->messagePosition >= 0) {
++        if ($this->messagePosition > 0) {
+             throw new BufferError('The previous message is not finished');
+         }
+         $this->buffer->writeMessage();
+
+
+173) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:70    [M] GreaterThanOrEqualToNegotiation
+
+--- Original
++++ New
+@@ @@
+     }
+     public function writeFlush() : self
+     {
+-        if ($this->messagePosition >= 0) {
++        if ($this->messagePosition < 0) {
+             throw new BufferError('The previous message is not finished');
+         }
+         $this->buffer->writeMessage();
+
+
+174) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:71    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+     public function writeFlush() : self
+     {
+         if ($this->messagePosition >= 0) {
+-            throw new BufferError('The previous message is not finished');
++            new BufferError('The previous message is not finished');
+         }
+         $this->buffer->writeMessage();
+         return $this;
+
+
+175) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:74    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         if ($this->messagePosition >= 0) {
+             throw new BufferError('The previous message is not finished');
+         }
+-        $this->buffer->writeMessage();
++        
+         return $this;
+     }
+     public function unwrap() : Buffer
+
+
+176) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:79    [M] PublicVisibility
+
+--- Original
++++ New
+@@ @@
+         $this->buffer->writeMessage();
+         return $this;
+     }
+-    public function unwrap() : Buffer
++    protected function unwrap() : Buffer
+     {
+         if ($this->messagePosition >= 0) {
+             throw new BufferError('An unfinished message is in the buffer');
+
+
+177) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:81    [M] GreaterThanOrEqualTo
+
+--- Original
++++ New
+@@ @@
+     }
+     public function unwrap() : Buffer
+     {
+-        if ($this->messagePosition >= 0) {
++        if ($this->messagePosition > 0) {
+             throw new BufferError('An unfinished message is in the buffer');
+         }
+         return $this->buffer->unwrap();
+     }
+
+178) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:81    [M] GreaterThanOrEqualToNegotiation
+
+--- Original
++++ New
+@@ @@
+     }
+     public function unwrap() : Buffer
+     {
+-        if ($this->messagePosition >= 0) {
++        if ($this->messagePosition < 0) {
+             throw new BufferError('An unfinished message is in the buffer');
+         }
+         return $this->buffer->unwrap();
+     }
+
+179) /Users/guillaume/Projects/edgedb-php/src/Protocol/WriteMessageBuffer.php:82    [M] Throw_
+
+--- Original
++++ New
+@@ @@
+     public function unwrap() : Buffer
+     {
+         if ($this->messagePosition >= 0) {
+-            throw new BufferError('An unfinished message is in the buffer');
++            new BufferError('An unfinished message is in the buffer');
+         }
+         return $this->buffer->unwrap();
+     }
  }
 
-
-144) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:36    [M] PublicVisibility
+180) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:36    [M] PublicVisibility
 
 --- Original
 +++ New
@@ -2256,7 +2796,7 @@ Not Covered mutants:
      }
 
 
-145) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:38    [M] UnwrapArrayFilter
+181) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:38    [M] UnwrapArrayFilter
 
 --- Original
 +++ New
@@ -2271,7 +2811,7 @@ Not Covered mutants:
      {
 
 
-146) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:41    [M] PublicVisibility
+182) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:41    [M] PublicVisibility
 
 --- Original
 +++ New
@@ -2286,7 +2826,7 @@ Not Covered mutants:
      }
 
 
-147) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:49    [M] PublicVisibility
+183) /Users/guillaume/Projects/edgedb-php/src/Query/EdgeQLHttpResult.php:49    [M] PublicVisibility
 
 --- Original
 +++ New

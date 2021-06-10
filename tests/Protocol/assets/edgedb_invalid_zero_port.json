@@ -1,5 +1,5 @@
 {
-  "username": "edgedb",
+  "user": "edgedb",
   "password": "edgedb",
   "port": 0,
   "database": "foo"

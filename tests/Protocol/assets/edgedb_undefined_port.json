@@ -1,0 +1,5 @@
+{
+  "user": "edgedb",
+  "password": "edgedb",
+  "database": "foo"
+}

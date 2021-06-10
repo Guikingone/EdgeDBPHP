@@ -1,6 +1,7 @@
 {
 	"name": "guikingone/edgedb-php",
 	"description": "A PHP client for EdgeDB",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Guillaume Loulier",
@@ -11,8 +12,14 @@
 	"autoload": {
 		"psr-4": {
 			"EdgeDB\\": "src/",
+			"EdgeDB\\Client\\": "src/Client/",
+			"EdgeDB\\EdgeQL\\": "src/EdgeQL/",
+			"EdgeDB\\EdgeQL\\Administration\\": "src/EdgeQL/Administration/",
+			"EdgeDB\\EdgeQL\\DataDefinition\\": "src/EdgeQL/DataDefinition/",
+			"EdgeDB\\EdgeQL\\SchemaDefinition\\": "src/EdgeQL/SchemaDefinition/",
+			"EdgeDB\\EdgeQL\\Statement\\": "src/EdgeQL/Statement/",
 			"EdgeDB\\Exception\\": "src/Exception/",
-			"EdgeDB\\Events\\": "src/Events/",
+			"EdgeDB\\Event\\": "src/Event/",
 			"EdgeDB\\Protocol\\": "src/Protocol/",
 			"EdgeDB\\Query\\": "src/Query/",
 			"EdgeDB\\Types\\": "src/Types/"
@@ -21,36 +28,49 @@
 	"autoload-dev": {
 		"psr-4": {
 			"Tests\\EdgeDB\\": "tests/",
-			"Tests\\EdgeDB\\Events\\": "tests/Events/"
+			"Tests\\EdgeDB\\Client\\": "tests/Client/",
+			"Tests\\EdgeDB\\EdgeQL\\": "tests/EdgeQL/",
+			"Tests\\EdgeDB\\EdgeQL\\Administration\\": "tests/EdgeQL/Administration/",
+			"Tests\\EdgeDB\\EdgeQL\\DataDefinition\\": "tests/EdgeQL/DataDefinition/",
+			"Tests\\EdgeDB\\EdgeQL\\SchemaDefinition\\": "tests/EdgeQL/SchemaDefinition/",
+			"Tests\\EdgeDB\\EdgeQL\\Statement\\": "tests/EdgeQL/Statement/",
+			"Tests\\EdgeDB\\Event\\": "tests/Event/",
+			"Tests\\EdgeDB\\Events\\Query\\": "tests/Events/Query/",
+			"Tests\\EdgeDB\\Protocol\\": "tests/Protocol/",
+			"Tests\\EdgeDB\\Query\\": "tests/Query/",
+			"Tests\\EdgeDB\\Types\\": "tests/Types/"
 		}
+	},
+	"config": {
+		"classmap-authoritative": true,
+		"optimize-autoloader": true,
+		"sort-packages": true
 	},
 	"require": {
 		"php": ">=7.4",
 		"ext-json": "*",
-		"ext-pgsql": "*",
-		"symfony/options-resolver": "^5.2",
+		"psr/event-dispatcher": "^1.0",
 		"psr/http-client": "^1.0",
 		"psr/http-message": "^1.0",
-		"psr/event-dispatcher": "^1.0",
-		"psr/log": "^1.1",
 		"psr/http-factory": "^1.0",
 		"php-http/discovery": "^1.13",
-		"webonyx/graphql-php": "^14.5",
-		"doctrine/dbal": "^3.0"
+		"psr/log": "^1.1"
 	},
 	"require-dev": {
-		"friendsofphp/php-cs-fixer": "^2.17",
-		"infection/infection": "^0.15.3",
-		"nikic/php-parser": "4.10.2",
-		"phpunit/phpunit": "^8.5",
-		"phpstan/phpstan": "^0.12.62",
+		"composer/package-versions-deprecated": "^1.11",
+		"friendsofphp/php-cs-fixer": "^3.0",
+		"infection/infection": "^0.23",
+		"nikic/php-parser": "^4.10.3",
+		"phpstan/phpstan": "^0.12",
 		"phpstan/phpstan-phpunit": "^0.12.17",
-		"rector/rector": "^0.8.56",
+		"phpstan/phpstan-strict-rules": "^0.12.9",
+		"phpunit/phpunit": "^9.5",
+		"psr/cache": "^1.0",
+		"rector/rector": "^0.11.16",
 		"symfony/http-client": "^5.2",
 		"guzzlehttp/guzzle": "^7.2",
 		"nyholm/psr7": "^1.3",
 		"php-http/httplug": "^2.2",
-		"vimeo/psalm": "^4.4",
-		"composer/package-versions-deprecated": "^1.11"
+		"vimeo/psalm": "^4.6"
 	}
 }

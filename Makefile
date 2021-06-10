@@ -1,6 +1,6 @@
 DOCKER 		   = @docker
 DOCKER_COMPOSE = @docker-compose
-PHP            = $(DOCKER_COMPOSE) run --rm php
+PHP            = @symfony php
 
 .DEFAULT_GOAL := help
 
@@ -35,16 +35,12 @@ vendor: composer.json composer.lock
 .PHONY: php-cs-fixer php-cs-fixer-dry phpstan rector-dry rector
 
 php-cs-fixer: ## Run PHP-CS-FIXER and fix the errors
-php-cs-fixer:
-	$(PHP) vendor/bin/php-cs-fixer fix .
+php-cs-fixer: .php-cs-fixer.dist.php
+	$(PHP) vendor/bin/php-cs-fixer fix . --allow-risky=yes
 
 php-cs-fixer-dry: ## Run PHP-CS-FIXER in --dry-run mode
-php-cs-fixer-dry:
-	$(PHP) vendor/bin/php-cs-fixer fix . --dry-run
-
-phpstan: ## Run PHPStan (the configuration must be defined in phpstan.neon)
-phpstan: phpstan.neon
-	$(PHP) vendor/bin/rector analyse /app/src
+php-cs-fixer-dry: .php-cs-fixer.dist.php
+	$(PHP) vendor/bin/php-cs-fixer fix . --dry-run --allow-risky=yes
 
 rector-dry: ## Run Rector in --dry-run mode
 rector-dry: rector.php
@@ -53,6 +49,14 @@ rector-dry: rector.php
 rector: ## Run Rector
 rector: rector.php
 	$(PHP) vendor/bin/rector process --config rector.php
+
+phpstan: ## Run PHPStan (the configuration must be defined in phpstan.neon.dist)
+phpstan: phpstan.neon.dist
+	$(PHP) vendor/bin/phpstan analyse --memory-limit 2G --xdebug
+
+psalm: ## Run Psalm
+psalm: psalm.xml
+	$(PHP) vendor/bin/psalm --show-info=true
 
 ##
 ## Tests
@@ -66,4 +70,4 @@ tests: phpunit.xml.dist
 
 infection: ## Launch Infection
 infection: infection.json.dist
-	$(PHP) vendor/bin/infection --min-covered-msi=90 --min-msi=80
+	$(PHP) vendor/bin/infection
