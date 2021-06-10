@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\EdgeDB\EdgeQL\DataDefinition;
 
+use EdgeDB\EdgeQL\Administration\Configure;
 use EdgeDB\EdgeQL\Administration\Database;
 use EdgeDB\EdgeQL\Administration\Role;
 use EdgeDB\EdgeQL\DataDefinition\Migration;
@@ -42,6 +43,10 @@ final class MigrationTest extends TestCase
 
     public function testMigrationCannotBeCreatedWithConfigureStatement(): void
     {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Configuration related statements are not allowed');
+        self::expectExceptionCode(0);
+        Migration::create(Configure::new('CURRENT DATABASE', 'query_work_mem', '4MB'));
     }
 
     public function testMigrationCannotBeCreatedWithMigrationStatement(): void

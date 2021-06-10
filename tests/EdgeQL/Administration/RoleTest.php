@@ -44,6 +44,11 @@ final class RoleTest extends TestCase
 
     public function testRoleCanBeAlteredWithRoleExtension(): void
     {
+        self::assertSame('ALTER ROLE foo { EXTENDING bar; };', Role::extends('foo', 'bar'));
+        self::assertSame('ALTER ROLE foo { EXTENDING bar FIRST; };', Role::extends('foo', 'bar', 'FIRST'));
+        self::assertSame('ALTER ROLE foo { EXTENDING bar LAST; };', Role::extends('foo', 'bar', 'LAST'));
+        self::assertSame('ALTER ROLE foo { EXTENDING bar BEFORE random; };', Role::extends('foo', 'bar', 'BEFORE', 'random'));
+        self::assertSame('ALTER ROLE foo { EXTENDING bar AFTER random; };', Role::extends('foo', 'bar', 'AFTER', 'random'));
     }
 
     public function testRoleCanBeDropped(): void

@@ -47,6 +47,28 @@ final class Role
     /**
      * {@see https://www.edgedb.com/docs/edgeql/admin/roles#alter-role}
      */
+    public static function extends(string $role, string $extendedRole, ?string $extensionType = null, ?string $parent = null): string
+    {
+        $extends = sprintf('ALTER %s %s', self::IDENTIFIER, $role);
+
+        if (null === $extensionType) {
+            $extends = sprintf('%s { EXTENDING %s; };', $extends, $extendedRole);
+        }
+
+        if (null !== $extensionType && ('FIRST' === $extensionType || 'LAST' === $extensionType)) {
+            $extends = sprintf('%s { EXTENDING %s %s; };', $extends, $extendedRole, $extensionType);
+        }
+
+        if (null !== $parent && ('BEFORE' === $extensionType || 'AFTER' === $extensionType)) {
+            $extends = sprintf('%s { EXTENDING %s %s %s; };', $extends, $extendedRole, $extensionType, $parent);
+        }
+
+        return $extends;
+    }
+
+    /**
+     * {@see https://www.edgedb.com/docs/edgeql/admin/roles#alter-role}
+     */
     public static function newPassword(string $role, string $password): string
     {
         return sprintf('ALTER %s %s { SET password := %s; };', self::IDENTIFIER, $role, $password);
